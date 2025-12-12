@@ -35,6 +35,7 @@ public class VerifyOTP extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         leftSide = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
         rightSide = new javax.swing.JPanel();
         userOTP = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -43,7 +44,6 @@ public class VerifyOTP extends javax.swing.JFrame {
         VerifyOTP = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1920, 1080));
         setMinimumSize(new java.awt.Dimension(1920, 1080));
 
         jPanel4.setBackground(new java.awt.Color(255, 153, 153));
@@ -59,6 +59,8 @@ public class VerifyOTP extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Educover_logo/EduCoverLogo.png"))); // NOI18N
+
         javax.swing.GroupLayout leftSideLayout = new javax.swing.GroupLayout(leftSide);
         leftSide.setLayout(leftSideLayout);
         leftSideLayout.setHorizontalGroup(
@@ -66,15 +68,23 @@ public class VerifyOTP extends javax.swing.JFrame {
             .addGroup(leftSideLayout.createSequentialGroup()
                 .addGap(56, 56, 56)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(735, Short.MAX_VALUE))
+                .addContainerGap(749, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, leftSideLayout.createSequentialGroup()
+                .addContainerGap(237, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(237, 237, 237))
         );
         leftSideLayout.setVerticalGroup(
             leftSideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(leftSideLayout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(241, 241, 241)
+                .addComponent(jLabel4)
+                .addContainerGap(290, Short.MAX_VALUE))
         );
+
+        rightSide.setPreferredSize(new java.awt.Dimension(960, 1080));
 
         userOTP.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         userOTP.addActionListener(new java.awt.event.ActionListener() {
@@ -121,7 +131,7 @@ public class VerifyOTP extends javax.swing.JFrame {
         rightSide.setLayout(rightSideLayout);
         rightSideLayout.setHorizontalGroup(
             rightSideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 953, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 960, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, rightSideLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(rightSideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,7 +160,7 @@ public class VerifyOTP extends javax.swing.JFrame {
                 .addComponent(userOTP, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(63, 63, 63)
                 .addComponent(VerifyOTP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(570, Short.MAX_VALUE))
+                .addContainerGap(602, Short.MAX_VALUE))
         );
 
         userOTP.getAccessibleContext().setAccessibleName("userOTP");
@@ -171,7 +181,7 @@ public class VerifyOTP extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(leftSide, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(rightSide, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(rightSide, javax.swing.GroupLayout.DEFAULT_SIZE, 1112, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -251,6 +261,7 @@ public class VerifyOTP extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel leftSide;
     private javax.swing.JPanel rightSide;

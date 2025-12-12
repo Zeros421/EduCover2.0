@@ -57,7 +57,9 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="235" pref="235" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="133" max="-2" attributes="0"/>
+                  <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
@@ -94,9 +96,17 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
                   <Component id="jLabel1" min="-2" pref="50" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
-                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="147" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
+                          <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace min="-2" pref="139" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="viewCourse" min="-2" pref="200" max="-2" attributes="0"/>
                       <Component id="CourseRecoveryPlan" min="-2" pref="200" max="-2" attributes="0"/>
@@ -109,7 +119,7 @@
                       <Component id="failedStudents" min="-2" pref="200" max="-2" attributes="0"/>
                       <Component id="generateReport" min="-2" pref="200" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="256" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -308,6 +318,8 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Welcome back. Select an option below to manage your courses and students."/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel3">
         </Component>
       </SubComponents>
     </Container>

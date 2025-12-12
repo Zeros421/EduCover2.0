@@ -226,7 +226,6 @@
               <Image iconType="3" name="/Homepage_icons/management.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Manage Users"/>
-            <Property name="actionCommand" type="java.lang.String" value="Manage Users"/>
             <Property name="alignmentX" type="float" value="0.5"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">

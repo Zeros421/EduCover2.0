@@ -46,6 +46,7 @@ public class HomePage extends javax.swing.JFrame {
         logout = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("homePage");
@@ -164,7 +165,9 @@ public class HomePage extends javax.swing.JFrame {
         MainPanelLayout.setHorizontalGroup(
             MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MainPanelLayout.createSequentialGroup()
-                .addGap(235, 235, 235)
+                .addGap(133, 133, 133)
+                .addComponent(jLabel3)
+                .addGap(65, 65, 65)
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(MainPanelLayout.createSequentialGroup()
                         .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -192,9 +195,14 @@ public class HomePage extends javax.swing.JFrame {
             .addGroup(MainPanelLayout.createSequentialGroup()
                 .addGap(47, 47, 47)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(jLabel2)
-                .addGap(147, 147, 147)
+                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(MainPanelLayout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel2))
+                    .addGroup(MainPanelLayout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addComponent(jLabel3)))
+                .addGap(139, 139, 139)
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(viewCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(CourseRecoveryPlan, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -205,7 +213,7 @@ public class HomePage extends javax.swing.JFrame {
                     .addComponent(logout, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(failedStudents, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(generateReport, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(256, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -314,6 +322,7 @@ public class HomePage extends javax.swing.JFrame {
     private javax.swing.JButton generateReport;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JButton logout;
     private javax.swing.JButton viewCourse;
     private javax.swing.JButton viewProfile;

@@ -37,6 +37,7 @@ public class NewPassword extends javax.swing.JFrame {
 
         jPanel4 = new javax.swing.JPanel();
         leftSide = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -54,16 +55,25 @@ public class NewPassword extends javax.swing.JFrame {
         leftSide.setBackground(new java.awt.Color(75, 100, 146));
         leftSide.setMaximumSize(new java.awt.Dimension(960, 1080));
         leftSide.setMinimumSize(new java.awt.Dimension(960, 1080));
+        leftSide.setPreferredSize(new java.awt.Dimension(960, 1080));
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Educover_logo/EduCoverLogo.png"))); // NOI18N
 
         javax.swing.GroupLayout leftSideLayout = new javax.swing.GroupLayout(leftSide);
         leftSide.setLayout(leftSideLayout);
         leftSideLayout.setHorizontalGroup(
             leftSideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 960, Short.MAX_VALUE)
+            .addGroup(leftSideLayout.createSequentialGroup()
+                .addGap(237, 237, 237)
+                .addComponent(jLabel5)
+                .addContainerGap(237, Short.MAX_VALUE))
         );
         leftSideLayout.setVerticalGroup(
             leftSideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1080, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, leftSideLayout.createSequentialGroup()
+                .addContainerGap(290, Short.MAX_VALUE)
+                .addComponent(jLabel5)
+                .addGap(290, 290, 290))
         );
 
         jLabel1.setBackground(new java.awt.Color(75, 100, 146));
@@ -152,7 +162,7 @@ public class NewPassword extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(leftSide, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
         );
@@ -258,6 +268,7 @@ public class NewPassword extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel leftSide;

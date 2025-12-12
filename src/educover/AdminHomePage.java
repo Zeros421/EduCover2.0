@@ -249,7 +249,10 @@ public class AdminHomePage extends javax.swing.JFrame {
     }//GEN-LAST:event_viewCourseActionPerformed
 
     private void manageUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manageUsersActionPerformed
-        // TODO add your handling code here:
+        UserManagement management = new UserManagement();
+        management.setVisible(true);
+        management.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.dispose();
     }//GEN-LAST:event_manageUsersActionPerformed
 
     private void updateRecommendationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateRecommendationActionPerformed

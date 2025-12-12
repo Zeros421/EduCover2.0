@@ -39,6 +39,7 @@ public class RecoverPassword extends javax.swing.JFrame {
 
         jPanel4 = new javax.swing.JPanel();
         leftSide = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
         rightSide = new javax.swing.JPanel();
         revocerPasswordEmail = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -55,15 +56,23 @@ public class RecoverPassword extends javax.swing.JFrame {
         leftSide.setMinimumSize(new java.awt.Dimension(960, 1080));
         leftSide.setPreferredSize(new java.awt.Dimension(960, 1080));
 
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Educover_logo/EduCoverLogo.png"))); // NOI18N
+
         javax.swing.GroupLayout leftSideLayout = new javax.swing.GroupLayout(leftSide);
         leftSide.setLayout(leftSideLayout);
         leftSideLayout.setHorizontalGroup(
             leftSideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 960, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, leftSideLayout.createSequentialGroup()
+                .addContainerGap(223, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(237, 237, 237))
         );
         leftSideLayout.setVerticalGroup(
             leftSideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1080, Short.MAX_VALUE)
+            .addGroup(leftSideLayout.createSequentialGroup()
+                .addGap(290, 290, 290)
+                .addComponent(jLabel4)
+                .addContainerGap(290, Short.MAX_VALUE))
         );
 
         revocerPasswordEmail.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -273,6 +282,7 @@ public class RecoverPassword extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel leftSide;
     private javax.swing.JTextField revocerPasswordEmail;

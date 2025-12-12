@@ -61,20 +61,26 @@ public class LoginPage extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Showcard Gothic", 1, 36)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("EduCover");
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Educover_logo/EduCoverLogo.png"))); // NOI18N
+        jLabel4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabel4.setIconTextGap(10);
+        jLabel4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
         javax.swing.GroupLayout leftLoginPanelLayout = new javax.swing.GroupLayout(leftLoginPanel);
         leftLoginPanel.setLayout(leftLoginPanelLayout);
         leftLoginPanelLayout.setHorizontalGroup(
             leftLoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 960, Short.MAX_VALUE)
+            .addGroup(leftLoginPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 948, Short.MAX_VALUE)
+                .addContainerGap())
         );
         leftLoginPanelLayout.setVerticalGroup(
             leftLoginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(leftLoginPanelLayout.createSequentialGroup()
-                .addGap(543, 543, 543)
+                .addGap(298, 298, 298)
                 .addComponent(jLabel4)
-                .addContainerGap(1232, Short.MAX_VALUE))
+                .addContainerGap(1022, Short.MAX_VALUE))
         );
 
         rightLoginPanel.setMaximumSize(new java.awt.Dimension(960, 1080));
@@ -200,7 +206,6 @@ public class LoginPage extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(leftLoginPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
                 .addComponent(rightLoginPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
