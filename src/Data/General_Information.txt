@@ -1,0 +1,140 @@
+1. Dr. Brown
+
+Algorithms
+
+Operating Systems
+
+Cybersecurity
+
+Software Engineering
+
+English Composition
+
+Computer Science
+
+2. Dr. Lee
+
+Artificial Intelligence
+
+Chemistry
+
+Cybersecurity
+
+Physics
+
+Statistics
+
+Machine Learning
+
+Economics
+
+3. Dr. Johnson
+
+Biology
+
+History
+
+Data Structures
+
+Physics
+
+Chemistry
+
+English Composition
+
+Computer Science
+
+Cybersecurity
+
+4. Dr. Miller
+
+Software Engineering
+
+Philosophy
+
+Biology
+
+Economics
+
+English Composition
+
+Statistics
+
+Data Structures
+
+Networking
+
+Operating Systems
+
+Literature
+
+
+5. Dr. Kumar
+
+Literature
+
+Data Structures
+
+Philosophy
+
+Mathematics
+
+History
+
+Physics
+
+6. Prof. Chen
+
+English Composition
+
+Software Engineering
+
+Mathematics
+
+Database Systems
+
+Computer Science
+
+Philosophy
+
+Cybersecurity
+
+Statistics
+
+Economics
+
+7. Prof. Davis
+
+Artificial Intelligence
+
+Software Engineering
+
+Mathematics
+
+Computer Science
+
+Economics
+
+English Composition
+
+Networking
+
+Statistics
+
+Operating Systems
+
+8. Prof. Smith
+
+Mathematics
+
+Physics
+
+Networking
+
+Computer Science
+
+Literature
+
+Artificial Intelligence
+
+Cybersecurity

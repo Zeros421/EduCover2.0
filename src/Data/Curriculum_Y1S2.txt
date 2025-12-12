@@ -1,0 +1,41 @@
+MajorID|CourseID|CourseName|Credits
+CS|C113|Data Structures|4
+CS|C105|Operating Systems|2
+CS|C109|Software Engineering|2
+CS|C126|Cybersecurity|2
+LIT|C112|English Composition|2
+LIT|C104|Chemistry|3
+LIT|C119|Philosophy|4
+LIT|C124|Mathematics|3
+MATH|C125|Mathematics|2
+MATH|C120|Machine Learning|3
+MATH|C106|Artificial Intelligence|4
+MATH|C117|Cybersecurity|2
+PHIL|C103|Biology|2
+PHIL|C127|History|4
+PHIL|C112|English Composition|2
+PHIL|C105|Operating Systems|2
+STAT|C117|Cybersecurity|2
+STAT|C102|Artificial Intelligence|2
+STAT|C109|Software Engineering|2
+STAT|C105|Operating Systems|2
+ENG|C113|Data Structures|4
+ENG|C123|Operating Systems|2
+ENG|C109|Software Engineering|2
+ENG|C118|Software Engineering|2
+PHYS|C106|Artificial Intelligence|4
+PHYS|C115|Cybersecurity|3
+PHYS|C127|History|4
+PHYS|C103|Biology|2
+HIST|C105|Operating Systems|2
+HIST|C112|English Composition|2
+HIST|C104|Chemistry|3
+HIST|C123|Operating Systems|2
+ECON|C106|Artificial Intelligence|4
+ECON|C110|Literature|3
+ECON|C101|Algorithms|4
+ECON|C112|English Composition|2
+BIO|C120|Machine Learning|3
+BIO|C124|Mathematics|3
+BIO|C117|Cybersecurity|2
+BIO|C127|History|4

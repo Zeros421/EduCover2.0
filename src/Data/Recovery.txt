@@ -1,0 +1,40 @@
+StudentID|TaskID|CourseID|ComponentName|TaskType|WeekRange|Description|Deadline|Status
+S034|S034-2|C104|Midterm Test|MILESTONE|Week 2–3|Study chapter summaries|2025-05-16|NOT_STARTED
+S034|S034-1|C103|Assignment 1|MILESTONE|Week 1|Rewrite lab observations|2025-05-07|NOT_STARTED
+S034|S034-3|C104|Final Exam|MILESTONE|Week 4|Prepare summary notes|2025-05-27|IN_PROGRESS
+S010|S010-1|C113|Assignment 1|LECTURE_RECOMMENDATION|Week 1|Meet tutor for early review|2025-05-10|IN_PROGRESS
+S010|S010-3|C109|Final Exam|MILESTONE|Week 4|Review condensed notes|2025-05-27|IN_PROGRESS
+S073|S073-3|C123|Final Exam|MILESTONE|Week 4|Complete past-year papers|2025-05-28|NOT_STARTED
+S073|S073-1|C123|Assignment 1|MILESTONE|Week 1|Improve essay structure|2025-05-11|NOT_STARTED
+S073|S073-2|C114|Midterm Test|MILESTONE|Week 2–3|Practice structured answers|2025-05-19|NOT_STARTED
+S018|S018-1|C122|Assignment 1|MILESTONE|Week 1–2|Redo assignment corrections|2025-05-12|IN_PROGRESS
+S018|S018-3|C120|Final Exam|LECTURE_RECOMMENDATION|Week 2|Join online Q&A session|2025-05-19|COMPLETED
+S018|S018-2|C122|Midterm Test|MILESTONE|Week 2|Correct MCQ mistakes|2025-05-15|IN_PROGRESS
+S018|S018-4|C122|Final Exam|MILESTONE|Week 3|Complete full mock exam|2025-05-23|NOT_STARTED
+S045|S045-2|C127|Midterm Test|LECTURE_RECOMMENDATION|Week 3|Attend revision session|2025-05-22|NOT_STARTED
+S045|S045-1|C127|Assignment 1|MILESTONE|Week 1|Rewrite thesis section|2025-05-08|IN_PROGRESS
+S025|S025-3|C118|Final Exam|MILESTONE|Week 2–3|Attend focused study group|2025-05-20|IN_PROGRESS
+S025|S025-1|C113|Assignment 1|LECTURE_RECOMMENDATION|Week 1|Attend feedback workshop|2025-05-11|COMPLETED
+S025|S025-2|C118|Midterm Test|LECTURE_RECOMMENDATION|Week 2|Join peer study discussion|2025-05-20|NOT_STARTED
+S052|S052-1|C122|Assignment 1|MILESTONE|Week 1|Redo incorrect calculations|2025-05-07|NOT_STARTED
+S052|S052-3|C120|Final Exam|MILESTONE|Week 3|Redo long-answer questions|2025-05-26|NOT_STARTED
+S052|S052-2|C122|Midterm Test|LECTURE_RECOMMENDATION|Week 2|Instructor consultation|2025-05-20|COMPLETED
+S030|S030-2|C107|Midterm Test|LECTURE_RECOMMENDATION|Week 2|Consult lecturer on weak topics|2025-05-15|IN_PROGRESS
+S030|S030-1|C107|Assignment 1|MILESTONE|Week 1|Redo diagrams and labeling|2025-05-10|NOT_STARTED
+S007|S007-1|C105|Assignment 1|MILESTONE|Week 1–2|Rewrite variables and logic|2025-05-13|NOT_STARTED
+S007|S007-3|C114|Final Exam|MILESTONE|Week 3|Attend group revision|2025-05-24|IN_PROGRESS
+S041|S041-3|C119|Final Exam|LECTURE_RECOMMENDATION|Week 3–4|Book one-on-one revision|2025-05-25|NOT_STARTED
+S041|S041-1|C119|Assignment 1|MILESTONE|Week 1|Fix essay referencing|2025-05-09|NOT_STARTED
+S041|S041-2|C119|Midterm Test|MILESTONE|Week 2|Do practice quizzes|2025-05-15|IN_PROGRESS
+S060|S060-1|C106|Assignment 1|MILESTONE|Week 1|Fix incorrect implementations|2025-05-09|IN_PROGRESS
+S060|S060-3|C115|Final Exam|LECTURE_RECOMMENDATION|Week 3–4|Tutor walkthrough session|2025-05-29|NOT_STARTED
+S081|S081-2|C113|Midterm Test|MILESTONE|Week 3|Practice problem sets|2025-05-21|NOT_STARTED
+S081|S081-1765528923236|C113|Final Exam|LECTURE_RECOMMENDATION|Week 7|Revise on Chapter 7|10/12/2025|NOT_STARTED
+S004|S004-1|C108|Assignment 1|MILESTONE|Week 1|Resubmit corrected file|2025-05-08|COMPLETED
+S004|S004-2|C122|Midterm Test|MILESTONE|Week 2|Complete correction sheet|2025-05-16|IN_PROGRESS
+S021|S021-1|C126|Assignment 1|LECTURE_RECOMMENDATION|Week 1–2|Meet lecturer for guidance|2025-05-14|IN_PROGRESS
+S021|S021-2|C101|Assignment 1|MILESTONE|Week 1–2|Rewrite introduction|2025-05-14|NOT_STARTED
+S013|S013-2|C119|Midterm Test|LECTURE_RECOMMENDATION|Week 2|Watch recap lecture|2025-05-17|NOT_STARTED
+S001|S001-1|C113|Midterm Test|MILESTONE|week 5|study|02/12/2025|COMPLETED
+S001|S001-2|C101|Assignment 1|MILESTONE|week 6|Check with advisor idk|09/12/2025|COMPLETED
+S001|S001-1765523101771|C113|Exam|MILESTONE|week 7|Revise on chapter 6|13/11/2025|NOT_STARTED

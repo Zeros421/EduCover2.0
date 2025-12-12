@@ -1,0 +1,9 @@
+InstructorID|Name|Email|Password|role
+I101|Dr.Brown|TP074871@mail.apu.edu.my|1234|Instructor
+I102|Dr.Lee|TP073238@mail.apu.edu.my|1234|Instructor
+I103|Dr.John|Aizik.ad421@gmail.com|Aizik@421|Instructor
+I104|Dr.Miller|TP073354@mail.apu.edu.my|1234|Instructor
+I105|Dr.Kumar|Kumar@gmail.com|1234|Instructor
+I106|Prof.Chen|Chen@gmail.com|1234|Instructor
+I107|Prof.Davis|Davis@gmail.com|1234|Instructor
+I108|Prof.Smith|Smith@gmail.com|1234|Instructor

@@ -1,0 +1,28 @@
+CourseID|CourseName|Credits|Semester|Instructor|Capacity
+C101|Algorithms|4|Spring|Dr. Brown|143
+C102|Artificial Intelligence|2|Summer|Dr. Lee|92
+C103|Biology|2|Summer|Dr. Johnson|100
+C104|Chemistry|3|Fall|Dr. Lee|130
+C105|Operating Systems|2|Fall|Dr. Brown|144
+C106|Artificial Intelligence|4|Summer|Prof. Davis|191
+C107|English Composition|4|Fall|Prof. Chen|51
+C108|Literature|3|Spring|Dr. Kumar|197
+C109|Software Engineering|2|Spring|Prof. Davis|146
+C110|Literature|3|Summer|Prof. Davis|61
+C111|Database Systems|2|Summer|Prof. Chen|99
+C112|English Composition|2|Fall|Prof. Chen|148
+C113|Data Structures|4|Spring|Dr. Kumar|195
+C114|Software Engineering|4|Spring|Dr. Miller|121
+C115|Cybersecurity|3|Summer|Dr. Lee|95
+C116|Operating Systems|3|Spring|Prof. Chen|104
+C117|Cybersecurity|2|Summer|Dr. Brown|120
+C118|Software Engineering|2|Fall|Dr. Miller|76
+C119|Philosophy|4|Spring|Dr. Kumar|193
+C120|Machine Learning|3|Spring|Prof. Chen|176
+C121|Computer Science|3|Fall|Prof. Davis|132
+C122|Mathematics|4|Summer|Prof. Smith|170
+C123|Operating Systems|2|Spring|Dr. Miller|74
+C124|Mathematics|3|Summer|Prof. Davis|52
+C125|Mathematics|2|Summer|Prof. Chen|51
+C126|Cybersecurity|2|Fall|Prof. Chen|58
+C127|History|4|Spring|Dr. Johnson|69
