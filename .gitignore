@@ -1,0 +1,26 @@
+# NetBeans build directories
+/build/
+ /dist/
+nbproject/private/
+
+# Ignore NetBeans private configuration
+nbproject/private/
+nbproject/*-private.xml
+
+# Ignore compiled class files
+*.class
+
+# Ignore logs
+*.log
+
+# Ignore OS junk
+.DS_Store
+Thumbs.db
+
+# Ignore generated files
+*.jar
+*.war
+*.ear
+
+# Ignore backup files
+*~
