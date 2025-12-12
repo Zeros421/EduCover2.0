@@ -243,10 +243,23 @@ public class HomePage extends javax.swing.JFrame {
     }//GEN-LAST:event_failedStudentsActionPerformed
 
     private void generateReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateReportActionPerformed
-            PerformanceReport check = new PerformanceReport();
-            check.setVisible(true);
-            check.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            this.dispose();
+        // Get instructor ID from Session (should be "I101", "I102", etc.)
+        String instructorID = educover.backend.UserSession.userID;
+        String role = educover.backend.UserSession.userType;
+
+        // Check if user is admin/registrar
+        if (role != null && (role.equalsIgnoreCase("ADMIN") || role.equalsIgnoreCase("REGISTRAR"))) {
+            // Admin sees all students and all courses
+            PerformanceReport report = new PerformanceReport(null);
+            report.setVisible(true);
+            report.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        } else {
+            // Instructor sees only their students and courses
+            PerformanceReport report = new PerformanceReport(instructorID);
+            report.setVisible(true);
+            report.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
+   
              
     }//GEN-LAST:event_generateReportActionPerformed
 

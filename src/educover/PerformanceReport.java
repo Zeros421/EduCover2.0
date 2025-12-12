@@ -1,9 +1,9 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * 
+ * author @siije
  */
 package educover;
-
+//imports
 import javax.swing.table.DefaultTableModel;
 import javax.swing.DefaultListModel;
 import java.io.*;
@@ -18,6 +18,16 @@ import javax.mail.internet.*;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
+import java.util.Comparator;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JButton;           
+import java.util.Set;
+import java.util.HashSet;
+
 
 
 public class PerformanceReport extends javax.swing.JFrame {
@@ -31,21 +41,111 @@ public class PerformanceReport extends javax.swing.JFrame {
     private List<GradeRecord> allGrades;
     private DefaultListModel<String> listModel;
     private Student selectedStudent; 
-
+    
+    private List<Student> filteredStudents;  // Store filtered results
+    private String currentSearchQuery = "";
+    private String currentSortOption = "name";
+    
+    private String loggedInInstructorID;       
+    private List<String> instructorCourses;      
+    private boolean isAdmin;
     // ===== CONSTRUCTOR =====
     public PerformanceReport() {
+        this(null);  // null means admin view
+    }
+
+// New constructor (for specific instructor):
+    public PerformanceReport(String instructorID) {
+        this.loggedInInstructorID = instructorID;
+        this.isAdmin = (instructorID == null || instructorID.isEmpty());
+
         initComponents();
 
-        // Load and store all data
+        // Load all data first
         allStudents = loadStudents("src/Data/Student_Information.txt");
         allCourses = loadCourses("src/Data/Course_Information.txt");
         allGrades = loadGrades("src/Data/grades.txt");
 
-         initializeStudentList();
-        
+        // NEW: Load instructor's courses if not admin
+        if (!isAdmin) {
+            instructorCourses = loadInstructorCourses(instructorID);
+            System.out.println("DEBUG: Instructor " + instructorID + " teaches courses: " + instructorCourses);
+
+            // Filter students to only show those in instructor's classes
+            allStudents = filterStudentsByInstructor();
+            System.out.println("DEBUG: Found " + allStudents.size() + " students for instructor");
+        }
+
+        filteredStudents = new ArrayList<>(allStudents);
+
+        initializeStudentList();
         jList1.setModel(listModel);
-        
         clearTable();
+    }
+
+    private List<String> loadInstructorCourses(String instructorID) {
+        List<String> courses = new ArrayList<>();
+
+        if (instructorID == null || instructorID.isEmpty()) {
+            return courses;  // Admin has no course restrictions
+        }
+
+        try (BufferedReader br = new BufferedReader(new FileReader("src/Data/Course_Instructor_Mapping.txt"))) {
+            String line;
+            br.readLine(); // Skip header: CourseID|InstructorID
+
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) {
+                    continue;
+                }
+
+                String[] parts = line.split("\\|");
+                if (parts.length >= 2) {
+                    String courseID = parts[0].trim();           // C101
+                    String courseInstructorID = parts[1].trim(); // I101
+
+                    // If this course belongs to the logged-in instructor
+                    if (courseInstructorID.equals(instructorID)) {
+                        courses.add(courseID);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("ERROR: Could not load Course_Instructor_Mapping.txt");
+            e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(null,
+                    "Error loading instructor courses: " + e.getMessage(),
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+
+        return courses;
+    }
+    
+    private List<Student> filterStudentsByInstructor() {
+        if (isAdmin || instructorCourses.isEmpty()) {
+            return new ArrayList<>(allStudents);  // Admin sees all students
+        }
+
+        List<Student> filtered = new ArrayList<>();
+        Set<String> studentIDs = new HashSet<>();
+
+        // Find all students who have grades in instructor's courses
+        for (GradeRecord grade : allGrades) {
+            if (instructorCourses.contains(grade.getCourseID())) {
+                studentIDs.add(grade.getStudentID());
+            }
+        }
+
+        // Get student objects for these student IDs
+        for (Student student : allStudents) {
+            if (studentIDs.contains(student.getStudentID())) {
+                filtered.add(student);
+            }
+        }
+
+        return filtered;
     }
     
     private void initializeStudentList() {
@@ -98,7 +198,8 @@ public class PerformanceReport extends javax.swing.JFrame {
         }
         return null;
     }
-
+    
+     
     private String convertGPAToLetter(double gpa) {
         if (gpa >= 3.7) return "A";
         if (gpa >= 3.3) return "B+";
@@ -114,14 +215,20 @@ public class PerformanceReport extends javax.swing.JFrame {
     private void filterTableByStudent(String studentID) {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
-        
+
         for (GradeRecord g : allGrades) {
             if (g.getStudentID().equals(studentID)) {
+
+                // NEW: If instructor logged in, only show their courses
+                if (!isAdmin && !instructorCourses.contains(g.getCourseID())) {
+                    continue;  // Skip courses not taught by this instructor
+                }
+
                 Course c = findCourseByID(allCourses, g.getCourseID());
                 if (c != null) {
                     double gpa = g.getGPA();
                     double creditPoint = gpa * c.getCredits();
-                    
+
                     model.addRow(new Object[]{
                         c.getCourseID(),
                         c.getCourseName(),
@@ -133,8 +240,10 @@ public class PerformanceReport extends javax.swing.JFrame {
             }
         }
 
+        // Add empty row
         model.addRow(new Object[]{"", "", "", "", ""});
-        
+
+        // Add CGPA row
         double cgpa = calculateCGPA(studentID);
         model.addRow(new Object[]{"", "", "", "CGPA:", String.format("%.2f", cgpa)});
     }
@@ -142,9 +251,15 @@ public class PerformanceReport extends javax.swing.JFrame {
     private double calculateCGPA(String studentID) {
         double totalGradePoints = 0;
         int totalCredits = 0;
-        
+
         for (GradeRecord g : allGrades) {
             if (g.getStudentID().equals(studentID)) {
+
+                // NEW: If instructor logged in, only count their courses
+                if (!isAdmin && !instructorCourses.contains(g.getCourseID())) {
+                    continue;  // Skip courses not taught by this instructor
+                }
+
                 Course c = findCourseByID(allCourses, g.getCourseID());
                 if (c != null) {
                     totalGradePoints += g.getGPA() * c.getCredits();
@@ -152,7 +267,7 @@ public class PerformanceReport extends javax.swing.JFrame {
                 }
             }
         }
-        
+
         return totalCredits > 0 ? totalGradePoints / totalCredits : 0.0;
     }
     //GET STUDENT EMAIL
@@ -243,52 +358,162 @@ public class PerformanceReport extends javax.swing.JFrame {
             return false;
         }
     }
+        
+    //APPLY FILTER METHOD
+    private void applyFilters(String searchQuery, String sortOption) {
+        // Start with all students
+        filteredStudents = new ArrayList<>(allStudents);
+
+        // Apply search filter
+        if (!searchQuery.isEmpty()) {
+            filteredStudents = searchStudents(searchQuery);
+        }
+
+        // Apply sort
+        sortStudents(filteredStudents, sortOption);
+
+        // Update the list display
+        updateStudentList(filteredStudents);
+
+        // Update label
+        if (!searchQuery.isEmpty()) {
+            label4.setText("Showing " + filteredStudents.size() + " of " + allStudents.size() + " students");
+        } else {
+            label4.setText("Total Students: " + filteredStudents.size());
+        }
+    }
+    private List<Student> searchStudents(String query) {
+        List<Student> results = new ArrayList<>();
+        String searchLower = query.toLowerCase();
+
+        for (Student s : allStudents) {
+            // Search by student ID
+            if (s.getStudentID().toLowerCase().contains(searchLower)) {
+                results.add(s);
+                continue;
+            }
+
+            // Search by first name
+            if (s.getFirstName().toLowerCase().contains(searchLower)) {
+                results.add(s);
+                continue;
+            }
+
+            // Search by last name
+            if (s.getLastName().toLowerCase().contains(searchLower)) {
+                results.add(s);
+                continue;
+            }
+
+            // Search by full name
+            if (s.getName().toLowerCase().contains(searchLower)) {
+                results.add(s);
+            }
+        }
+
+        return results;
+    }
+
+// ===== SORT STUDENTS METHOD =====
+// Add this method to sort students
+    private void sortStudents(List<Student> students, String sortOption) {
+        switch (sortOption) {
+            case "Name (A-Z)":
+                students.sort(Comparator.comparing(Student::getName));
+                break;
+
+            case "Name (Z-A)":
+                students.sort(Comparator.comparing(Student::getName).reversed());
+                break;
+
+            case "Student ID (Ascending)":
+                students.sort(Comparator.comparing(Student::getStudentID));
+                break;
+
+            case "Student ID (Descending)":
+                students.sort(Comparator.comparing(Student::getStudentID).reversed());
+                break;
+
+            default:
+                students.sort(Comparator.comparing(Student::getName));
+        }
+    }
+
+// ===== UPDATE STUDENT LIST METHOD =====
+// Add this method to refresh the JList display
+    private void updateStudentList(List<Student> students) {
+        listModel.clear();
+
+        for (Student s : students) {
+            listModel.addElement(s.getStudentID() + " - " + s.getName());
+        }
+
+        // Clear selection
+        jList1.clearSelection();
+        selectedStudent = null;
+        clearTable();
+    }
     // ===== PDF GENERATION =====
     
     private void generatePDFReport(File file, Student student) throws Exception {
         Document document = new Document(PageSize.A4, 50, 50, 50, 50);
         PdfWriter.getInstance(document, new FileOutputStream(file));
         document.open();
-        
+
         // Title
         Font titleFont = new Font(Font.FontFamily.HELVETICA, 22, Font.BOLD);
         Paragraph title = new Paragraph("Academic Performance Report", titleFont);
         title.setAlignment(Element.ALIGN_CENTER);
         title.setSpacingAfter(25);
         document.add(title);
-        
+
         // Student Information
         Font normalFont = new Font(Font.FontFamily.HELVETICA, 12);
         Font boldFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
         Font labelFont = new Font(Font.FontFamily.HELVETICA, 11, Font.BOLD);
-        
-        document.add(new Paragraph("Student Name: " + student.getFullName(), normalFont));
+
+        document.add(new Paragraph("Student Name: " + student.getName(), normalFont));
         document.add(new Paragraph("Student ID: " + student.getStudentID(), normalFont));
         document.add(new Paragraph("Program: " + student.getProgram(), normalFont));
+
+        // NEW: Add instructor info if applicable
+        if (!isAdmin) {
+            document.add(new Paragraph("Instructor ID: " + loggedInInstructorID, normalFont));
+            document.add(new Paragraph("Report Type: Instructor-Specific Courses Only", normalFont));
+        } else {
+            document.add(new Paragraph("Report Type: Complete Academic Record", normalFont));
+        }
+
         document.add(new Paragraph(" ")); // Spacing
-        
+
         // Course Table
         PdfPTable table = new PdfPTable(5);
         table.setWidthPercentage(100);
         table.setSpacingBefore(15);
         table.setSpacingAfter(15);
         table.setWidths(new float[]{2f, 3.5f, 1.5f, 1.2f, 1.8f});
-        
+
         // Table Headers
         addPDFTableHeader(table, "Course Code", labelFont);
         addPDFTableHeader(table, "Course Title", labelFont);
         addPDFTableHeader(table, "Credit Hours", labelFont);
         addPDFTableHeader(table, "Grade", labelFont);
         addPDFTableHeader(table, "Credit Point", labelFont);
-        
-        // Table Data
+
+        // Table Data - NEW: Filter by instructor's courses
         for (GradeRecord g : allGrades) {
             if (g.getStudentID().equals(student.getStudentID())) {
+
+                // NEW: Filter by instructor's courses
+                if (!isAdmin && !instructorCourses.contains(g.getCourseID())) {
+                    continue;  // Skip courses not taught by this instructor
+                }
+
                 Course c = findCourseByID(allCourses, g.getCourseID());
                 if (c != null) {
                     double gpa = g.getGPA();
                     double creditPoint = gpa * c.getCredits();
-                    
+
                     addPDFTableCell(table, c.getCourseID(), normalFont);
                     addPDFTableCell(table, c.getCourseName(), normalFont);
                     addPDFTableCell(table, String.valueOf(c.getCredits()), normalFont);
@@ -297,30 +522,31 @@ public class PerformanceReport extends javax.swing.JFrame {
                 }
             }
         }
-        
+
         document.add(table);
-        
+
         // CGPA
         double cgpa = calculateCGPA(student.getStudentID());
         Paragraph cgpaParagraph = new Paragraph(
-            "Cumulative GPA (CGPA): " + String.format("%.2f", cgpa), 
-            boldFont
+                "Cumulative GPA (CGPA): " + String.format("%.2f", cgpa),
+                boldFont
         );
         cgpaParagraph.setSpacingBefore(10);
         document.add(cgpaParagraph);
-        
+
         // Footer
         document.add(new Paragraph(" "));
         Font footerFont = new Font(Font.FontFamily.HELVETICA, 9, Font.ITALIC);
         Paragraph footer = new Paragraph(
-            "Report Generated: " + new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()), 
-            footerFont
+                "Report Generated: " + new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()),
+                footerFont
         );
         footer.setAlignment(Element.ALIGN_RIGHT);
         document.add(footer);
-        
+
         document.close();
     }
+
 
     private void addPDFTableHeader(PdfPTable table, String text, Font font) {
         PdfPCell cell = new PdfPCell(new Phrase(text, font));
@@ -450,6 +676,10 @@ public class PerformanceReport extends javax.swing.JFrame {
         public String getLastName() {
             return lastName;
         }
+        
+        public String getName() {
+            return firstName + " " + lastName;
+        }
 
         public String getFullName() {
             return firstName + " " + lastName;
@@ -503,7 +733,6 @@ public class PerformanceReport extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         label1 = new java.awt.Label();
-        label2 = new java.awt.Label();
         label3 = new java.awt.Label();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -514,15 +743,15 @@ public class PerformanceReport extends javax.swing.JFrame {
         label4 = new java.awt.Label();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        label5 = new java.awt.Label();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1920, 1080));
+
+        jPanel1.setPreferredSize(new java.awt.Dimension(1920, 1080));
 
         label1.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
         label1.setText("Academic Performance Report");
-
-        label2.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        label2.setText("Actions");
 
         label3.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         label3.setText("Student Name");
@@ -580,74 +809,75 @@ public class PerformanceReport extends javax.swing.JFrame {
             }
         });
 
+        label5.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        label5.setForeground(new java.awt.Color(153, 153, 153));
+        label5.setText("Generate Students Report");
+
+        jButton3.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        jButton3.setText("Filter");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGap(96, 96, 96)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(22, 22, 22)
+                                .addComponent(label4, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1393, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1074, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(label5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(label1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 885, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(label4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1380, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 166, Short.MAX_VALUE)
-                        .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(251, 251, 251))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(93, 93, 93)
-                        .addComponent(jButton4)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addGap(159, 159, 159))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton4)))
+                .addGap(0, 286, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1074, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton5)
-                            .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, 796, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
+                .addComponent(jButton5)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(42, 42, 42)
+                .addGap(79, 79, 79)
                 .addComponent(jButton5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(19, 19, 19)
                 .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2)
-                            .addComponent(jButton1))
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton4)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(19, 19, 19)
-                                .addComponent(label4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(180, 180, 180))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(label5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(45, 45, 45)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(label4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(label3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton4)
+                        .addComponent(jButton1)
+                        .addComponent(jButton3)
+                        .addComponent(jButton2)))
+                .addGap(4, 4, 4)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(158, 158, 158))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -656,14 +886,14 @@ public class PerformanceReport extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(64, 64, 64)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1775, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1190, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
 
@@ -858,9 +1088,97 @@ public class PerformanceReport extends javax.swing.JFrame {
             check.setExtendedState(JFrame.MAXIMIZED_BOTH);
             this.dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // Create a custom dialog with search and sort options
+        JDialog filterDialog = new JDialog(this, "Filter Students", true);
+        filterDialog.setLayout(new java.awt.BorderLayout(10, 10));
+        filterDialog.setSize(400, 250);
+        filterDialog.setLocationRelativeTo(this);
+
+        // Main panel
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new java.awt.GridLayout(4, 1, 10, 10));
+        mainPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        // Search section
+        JPanel searchPanel = new JPanel(new java.awt.BorderLayout(5, 5));
+        JLabel searchLabel = new JLabel("Search:");
+        JTextField searchField = new JTextField(currentSearchQuery);
+        searchPanel.add(searchLabel, java.awt.BorderLayout.WEST);
+        searchPanel.add(searchField, java.awt.BorderLayout.CENTER);
+
+        // Sort options section
+        JPanel sortPanel = new JPanel(new java.awt.BorderLayout(5, 5));
+        JLabel sortLabel = new JLabel("Sort by:");
+        JComboBox<String> sortCombo = new JComboBox<>(new String[]{
+            "Name (A-Z)",
+            "Name (Z-A)",
+            "Student ID (Ascending)",
+            "Student ID (Descending)"
+        });
+        sortPanel.add(sortLabel, java.awt.BorderLayout.WEST);
+        sortPanel.add(sortCombo, java.awt.BorderLayout.CENTER);
+
+        // Info label
+        JLabel infoLabel = new JLabel("Search by name or student ID", JLabel.CENTER);
+        infoLabel.setFont(new java.awt.Font("Arial", java.awt.Font.ITALIC, 11));
+
+        // Buttons panel
+        JPanel buttonPanel = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        JButton applyButton = new JButton("Apply");
+        JButton resetButton = new JButton("Reset");
+        JButton cancelButton = new JButton("Cancel");
+
+        buttonPanel.add(resetButton);
+        buttonPanel.add(cancelButton);
+        buttonPanel.add(applyButton);
+
+        // Add to main panel
+        mainPanel.add(searchPanel);
+        mainPanel.add(sortPanel);
+        mainPanel.add(infoLabel);
+        mainPanel.add(buttonPanel);
+
+        filterDialog.add(mainPanel);
+
+        // Apply button action
+        applyButton.addActionListener(e -> {
+            currentSearchQuery = searchField.getText().trim();
+            String sortOption = (String) sortCombo.getSelectedItem();
+
+            // Apply filters
+            applyFilters(currentSearchQuery, sortOption);
+
+            filterDialog.dispose();
+        });
+
+        // Reset button action
+        resetButton.addActionListener(e -> {
+            currentSearchQuery = "";
+            searchField.setText("");
+            sortCombo.setSelectedIndex(0);
+
+            // Reset to show all students sorted by name
+            applyFilters("", "Name (A-Z)");
+
+            filterDialog.dispose();
+        });
+
+        // Cancel button action
+        cancelButton.addActionListener(e -> {
+            filterDialog.dispose();
+        });
+
+        // Show dialog
+        filterDialog.setVisible(true);
+   
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JList<String> jList1;
@@ -869,8 +1187,8 @@ public class PerformanceReport extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private java.awt.Label label1;
-    private java.awt.Label label2;
     private java.awt.Label label3;
     private java.awt.Label label4;
+    private java.awt.Label label5;
     // End of variables declaration//GEN-END:variables
 }
