@@ -252,4 +252,7 @@ public void saveRecoveryPlan(RecoveryPlan plan, String filePath) {
     public List<String> getSubjectsForLecturer(String lecturerName) {
         return lecturerSubjects.getOrDefault(lecturerName, Collections.emptyList());
     }
+    
+    
+
 }

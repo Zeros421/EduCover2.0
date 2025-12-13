@@ -7,7 +7,7 @@ S005|Bob|Smith|Statistics|Freshman|bob.smith@university.edu
 S006|Quinn|Chen|Engineering|Freshman|quinn.chen@university.edu
 S007|Oscar|Smith|Philosophy|Freshman|oscar.smith@university.edu
 S008|Bob|Chen|Engineering|Freshman|bob.chen@university.edu
-S009|Rachel|Davis|Physics|Freshman|rachel.davis@university.edu
+S009|Rachel|Davis|Physics|Sophomore|rachel.davis@university.edu
 S010|Charlie|Miller|Computer Science|Freshman|charlie.miller@university.edu
 S011|Charlie|Brown|Engineering|Freshman|charlie.brown@university.edu
 S012|Quinn|Chen|Engineering|Freshman|quinn.chen@university.edu

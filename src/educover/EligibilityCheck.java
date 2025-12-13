@@ -10,6 +10,9 @@ import java.util.*;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import educover.backend.AccessControlService;
+import educover.backend.UserSession;
+
 /**
  *
  * @author Dyasi
@@ -21,12 +24,21 @@ import java.util.logging.Logger;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(EligibilityCheck.class.getName());
     private ArrayList<Student> students; // Reverting back to ArrayList for simplicity
     private JPanel studentListPanel;
+    private AccessControlService access;
+
 
     /**
      * Creates new form EligibilityTest
      */
     public EligibilityCheck() {
         initComponents();
+        // Initialize access control service
+access = new AccessControlService(
+        "src/data/Grades.txt",
+        "src/data/Course_Information.txt",
+        "src/data/Lecture_information.txt"
+);
+
         students = new ArrayList<>();
         loadAndDisplayStudents(); // This method is simple now
     }
@@ -387,14 +399,22 @@ private Map<String, List<String>> loadCurriculumForNextSem(String major) {
 
     loadGrades("src/data/grades.txt", studentInfo, courseInfo);
 
-    // Convert to list for display and compute eligibility
-    students = new ArrayList<>(studentInfo.values());
-    computeEligibility();
-            
-    loadEnrollments();
+   // Convert to list for display and compute eligibility
+students = new ArrayList<>(studentInfo.values());
+computeEligibility();
 
-    // Finally, display students
-    displayStudents();
+// Filter for lecturer if not admin
+String currentUser = UserSession.userID;  // Make sure UserSession is working
+boolean isAdmin = currentUser.startsWith("A");
+
+if (!isAdmin) {
+    List<String> allowedStudentIds = access.getAllowedStudents(currentUser);
+    // Filter your students list using allowedStudentIds
+    students.removeIf(s -> !allowedStudentIds.contains(s.studentID));
+}
+
+loadEnrollments();
+displayStudents();
 }
     
     private Map<String, Student> loadStudentInformation(String filename) {
@@ -507,16 +527,37 @@ private Map<String, List<String>> loadCurriculumForNextSem(String major) {
      * Displays all students in the panel
      */
     private void displayStudents() {
-        studentListPanel.removeAll();
-        
-        for (Student student : students) {
-            StudentRowPanel rowPanel = new StudentRowPanel(student);
-            studentListPanel.add(rowPanel);
+
+    studentListPanel.removeAll();
+
+    String currentUser = UserSession.userID;
+    boolean isAdmin = currentUser.startsWith("A");
+
+    AccessControlService access = new AccessControlService(
+            "src/data/Grades.txt",
+            "src/data/Course_Information.txt",
+            "src/data/Lecture_information.txt"
+    );
+
+    for (Student student : students) {
+
+        if (isAdmin) {
+            // Admin sees ALL students
+            studentListPanel.add(new StudentRowPanel(student));
+        } else {
+            // Lecturer sees ONLY their own students
+            boolean canAccess = access.canLecturerAccess(currentUser, student.studentID);
+
+            if (canAccess) {
+                studentListPanel.add(new StudentRowPanel(student));
+            }
         }
-        
-        studentListPanel.revalidate();
-        studentListPanel.repaint();
     }
+
+    studentListPanel.revalidate();
+    studentListPanel.repaint();
+}
+
 /**
  * Reads student data from CSV file and calculates CGPA
  *
