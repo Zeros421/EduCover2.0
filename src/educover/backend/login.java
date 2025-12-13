@@ -28,7 +28,7 @@ public class login {
                 String line;
                 while ((line = br.readLine())!= null){
                     String[] parts = line.split("\\|");
-                    if (parts.length == 5){
+                    if (parts.length == 6){
                         String fileEmail = parts[2];
                         String filePassword = parts[3];
 //                        System.out.println("txtfile:" + fileEmail + " " + "user input:" + userEmail);
@@ -42,6 +42,8 @@ public class login {
                         }
                     }
                 }
+                System.out.println( "user input:" + userEmail);
+                        
                 return new String[]{"ERROR_WRONG_EMAIL"};
             } catch (Exception e){
                 return new String[]{"ERROR"};
