@@ -1,10 +1,10 @@
 # NetBeans build directories
 /build/
- /dist/
-nbproject/private/
+/dist/
+/nbproject/private/
+nbproject/*-private.xml
 
 # Ignore NetBeans private configuration
-nbproject/private/
 nbproject/*-private.xml
 
 # Ignore compiled class files
