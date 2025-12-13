@@ -273,9 +273,15 @@ public class HomePage extends javax.swing.JFrame {
         }
         
         JOptionPane.showMessageDialog(this, "Logout Successful ;)");
+        
         UserSession.userID = "";
         UserSession.userName = "";
+        UserSession.userEmail = "";
+        UserSession.userPassword = "";
+        UserSession.userType = "";
+        UserSession.OTP = "";
         UserSession.loginTime = "";
+        
         LoginPage login = new LoginPage();
         login.setVisible(true);
         this.dispose();

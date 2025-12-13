@@ -248,6 +248,11 @@ CRPTable.getColumnModel()
         AddTask.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         AddTask.setForeground(new java.awt.Color(255, 255, 255));
         AddTask.setText("Add Task");
+        AddTask.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddTaskActionPerformed(evt);
+            }
+        });
 
         SaveButton.setBackground(new java.awt.Color(109, 223, 130));
         SaveButton.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
@@ -725,12 +730,16 @@ CRPTable.getColumnModel()
     }//GEN-LAST:event_TXTsearchActionPerformed
 
     private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
-   ((RecoveryPlanTable) CRPTable.getModel()).stopEdit();
+//   ((RecoveryPlan+Table) CRPTable.getModel()).stopEdit();
     }//GEN-LAST:event_SaveButtonActionPerformed
 
     private void EditRowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditRowButtonActionPerformed
 
     }//GEN-LAST:event_EditRowButtonActionPerformed
+
+    private void AddTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddTaskActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_AddTaskActionPerformed
 
 private void populateFailedComponents(String studentId) {
     RecoveryPlan plan = new RecoveryPlan(studentId);
