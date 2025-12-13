@@ -1,8 +1,8 @@
 StudentID|FirstName|LastName|Major|Year|Email
 S001|Fiona|Smith|Computer Science|Sophomore|fiona.smith@university.edu
-S002|George|Wilson|Literature|Sophomore|george.wilson@university.edu
+S002|George|Wilson|Literature|Freshman|george.wilson@university.edu
 S003|Ivan|Wilson|Mathematics|Sophomore|ivan.wilson@university.edu
-S004|Ivan|Chen|Philosophy|Sophomore|ivan.chen@university.edu
+S004|Ivan|Chen|Philosophy|Freshman|ivan.chen@university.edu
 S005|Bob|Smith|Statistics|Freshman|bob.smith@university.edu
 S006|Quinn|Chen|Engineering|Freshman|quinn.chen@university.edu
 S007|Oscar|Smith|Philosophy|Freshman|oscar.smith@university.edu
@@ -80,6 +80,6 @@ S078|Rachel|Davis|Physics|Freshman|rachel.davis@university.edu
 S079|Paula|Smith|Engineering|Freshman|paula.smith@university.edu
 S080|Michael|Lee|Literature|Freshman|michael.lee@university.edu
 S081|Bob|Chen|Statistics|Freshman|bob.chen@university.edu
-S082|Quinn|Kumar|Economics|Sophomore|quinn.kumar@university.edu
+S082|Quinn|Kumar|Economics|Freshman|quinn.kumar@university.edu
 S083|Charlie|Brown|Economics|Freshman|charlie.brown@university.edu
 S084|Jeremiah|Sii|Engineering|Freshman|siijeremiah@gmail.com

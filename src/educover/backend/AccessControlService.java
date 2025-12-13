@@ -1,54 +1,134 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package educover.backend;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-/**
- *
- * @author Fia
- */
+import java.util.Set;
+
 public class AccessControlService {
 
-    private final CRPRepo repo;
+    private final String gradesFile;
+    private final String courseInfoFile;
+    private final String lecturerInfoFile;
 
-    public AccessControlService(String gradesFile,
-                                String courseInfoFile,
-                                String lecturerInfoFile) {
-
-        repo = new CRPRepo();
-        repo.loadEnrollmentsFromGrades(gradesFile);
-        repo.loadCourses(courseInfoFile);
-        repo.loadLecturers(lecturerInfoFile);
+    public AccessControlService(String gradesFile, String courseInfoFile, String lecturerInfoFile) {
+        this.gradesFile = gradesFile;
+        this.courseInfoFile = courseInfoFile;
+        this.lecturerInfoFile = lecturerInfoFile;
     }
 
-    private String normalizeName(String name) {
-        if (name == null) return "";
-        return name.replace(" ", "").trim();
+    /* =========================
+       PUBLIC API (used by UI)
+       ========================= */
+
+    // Used by EligibilityCheck
+    public boolean canLecturerAccess(String lecturerID, String studentID) {
+        return getAllowedStudents(lecturerID).contains(studentID);
     }
 
-    public boolean canLecturerAccess(String instructorId, String studentId) {
+    // MAIN METHOD you need
+    public List<String> getAllowedStudents(String lecturerID) {
+        List<String> allowedStudents = new ArrayList<>();
 
-        String lecturerName = repo.getLecturerNameById(instructorId);
-        if (lecturerName == null) return false;
+        try {
+            String lecturerName = getLecturerNameById(lecturerID);
+            if (lecturerName == null) return allowedStudents;
 
-        String lecturerKey = normalizeName(lecturerName);
+            Set<String> lecturerCourses = getCoursesByLecturerName(lecturerName);
 
-        List<String> studentCourses = repo.getCoursesForStudent(studentId);
-        if (studentCourses.isEmpty()) return false;
+            try (BufferedReader br = new BufferedReader(new FileReader(gradesFile))) {
+                String line;
+                br.readLine(); // skip header
 
-        for (String courseId : studentCourses) {
-            CRPRepo.CourseRecord cr = repo.getCourse(courseId);
-            if (cr == null) continue;
+                while ((line = br.readLine()) != null) {
+                    if (line.trim().isEmpty()) continue;
 
-            // IMPORTANT: this is NAME from Course_Information.txt
-            String courseLecturerKey = normalizeName(cr.instructorName); // (or cr.instructorId if you didn't rename)
+                    String[] parts = line.split("\\|");
+                    if (parts.length < 2) continue;
 
-            if (courseLecturerKey.equalsIgnoreCase(lecturerKey)) {
-                return true;
+                    String studentID = parts[0].trim();
+                    String courseID  = parts[1].trim();
+
+                    if (lecturerCourses.contains(courseID)
+                            && !allowedStudents.contains(studentID)) {
+                        allowedStudents.add(studentID);
+                    }
+                }
+            }
+
+        } catch (IOException e) {
+            System.out.println("AccessControl error: " + e.getMessage());
+        }
+
+        return allowedStudents;
+    }
+
+    /* =========================
+       INTERNAL HELPERS
+       ========================= */
+
+    private String getLecturerNameById(String lecturerID) throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader(lecturerInfoFile))) {
+            String line;
+            br.readLine(); // skip header
+
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split("\\|");
+                if (parts.length >= 2 && parts[0].trim().equals(lecturerID)) {
+                    return parts[1].trim(); // lecturer name
+                }
+            }
+        }
+        return null;
+    }
+
+    private Set<String> getCoursesByLecturerName(String lecturerName) throws IOException {
+        Set<String> courses = new HashSet<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(courseInfoFile))) {
+            String line;
+            br.readLine(); // skip header
+
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split("\\|");
+                if (parts.length >= 5) {
+                    String courseID = parts[0].trim();
+                    String instructorName = parts[4].trim();
+
+                    if (normalize(instructorName).equals(normalize(lecturerName))) {
+                        courses.add(courseID);
+                    }
+                }
             }
         }
 
+        return courses;
+    }
+
+    private String normalize(String s) {
+        return s == null ? "" : s.replace(" ", "").toLowerCase();
+    }
+
+    private boolean isStudentInCourse(String studentID, String courseID) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(gradesFile));
+        String line;
+
+        while ((line = br.readLine()) != null) {
+            String[] parts = line.split("\\|");
+            if (parts.length >= 3) {
+                String sID = parts[0];
+                String cID = parts[1];
+
+                if (sID.equals(studentID) && cID.equals(courseID)) {
+                    br.close();
+                    return true;
+                }
+            }
+        }
+        br.close();
         return false;
     }
 }

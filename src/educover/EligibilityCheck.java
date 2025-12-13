@@ -10,6 +10,9 @@ import java.util.*;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import educover.backend.AccessControlService;
+import educover.backend.UserSession;
+
 /**
  *
  * @author Dyasi
@@ -21,12 +24,21 @@ import java.util.logging.Logger;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(EligibilityCheck.class.getName());
     private ArrayList<Student> students; // Reverting back to ArrayList for simplicity
     private JPanel studentListPanel;
+    private AccessControlService access;
+
 
     /**
      * Creates new form EligibilityTest
      */
     public EligibilityCheck() {
         initComponents();
+        // Initialize access control service
+access = new AccessControlService(
+        "src/data/Grades.txt",
+        "src/data/Course_Information.txt",
+        "src/data/Lecture_information.txt"
+);
+
         students = new ArrayList<>();
         loadAndDisplayStudents(); // This method is simple now
     }
@@ -57,13 +69,15 @@ import java.util.logging.Logger;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setMaximumSize(null);
         setSize(new java.awt.Dimension(1920, 1080));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setForeground(new java.awt.Color(255, 255, 255));
         jPanel1.setMaximumSize(null);
         jPanel1.setPreferredSize(new java.awt.Dimension(1920, 1080));
 
+        BackToHome.setBackground(new java.awt.Color(45, 59, 85));
+        BackToHome.setForeground(new java.awt.Color(255, 255, 255));
         BackToHome.setText("Back to Home");
         BackToHome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -71,6 +85,8 @@ import java.util.logging.Logger;
             }
         });
 
+        FilterButton.setBackground(new java.awt.Color(45, 59, 85));
+        FilterButton.setForeground(new java.awt.Color(255, 255, 255));
         FilterButton.setText("Filter");
         FilterButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -80,6 +96,8 @@ import java.util.logging.Logger;
 
         ListOfStudents.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
+        AllowRegistrationButton.setBackground(new java.awt.Color(45, 59, 85));
+        AllowRegistrationButton.setForeground(new java.awt.Color(255, 255, 255));
         AllowRegistrationButton.setText("Allow Registration");
         AllowRegistrationButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -88,11 +106,15 @@ import java.util.logging.Logger;
         });
 
         EligibilityTitle.setFont(new java.awt.Font("Times New Roman", 0, 48)); // NOI18N
+        EligibilityTitle.setForeground(new java.awt.Color(45, 59, 85));
         EligibilityTitle.setText("Eligibility Check and Enrollment");
 
+        jPanel2.setBackground(new java.awt.Color(45, 59, 85));
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel2.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Student Name");
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
@@ -100,9 +122,11 @@ import java.util.logging.Logger;
         jLabel2.setText("StudentID");
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Status");
 
         jLabel4.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("CGPA");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -114,7 +138,7 @@ import java.util.logging.Logger;
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1170, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addGap(131, 131, 131)
                 .addComponent(jLabel4)
@@ -156,19 +180,19 @@ import java.util.logging.Logger;
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(42, Short.MAX_VALUE)
+                .addContainerGap(65, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(FilterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(BackToHome, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(EligibilityTitle)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ListOfStudents, javax.swing.GroupLayout.PREFERRED_SIZE, 626, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
                 .addComponent(AllowRegistrationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(93, Short.MAX_VALUE))
+                .addContainerGap(67, Short.MAX_VALUE))
         );
 
         ListOfStudents.getAccessibleContext().setAccessibleParent(ListOfStudents);
@@ -387,14 +411,22 @@ private Map<String, List<String>> loadCurriculumForNextSem(String major) {
 
     loadGrades("src/data/grades.txt", studentInfo, courseInfo);
 
-    // Convert to list for display and compute eligibility
-    students = new ArrayList<>(studentInfo.values());
-    computeEligibility();
-            
-    loadEnrollments();
+   // Convert to list for display and compute eligibility
+students = new ArrayList<>(studentInfo.values());
+computeEligibility();
 
-    // Finally, display students
-    displayStudents();
+// Filter for lecturer if not admin
+String currentUser = UserSession.userID;  // Make sure UserSession is working
+boolean isAdmin = currentUser.startsWith("A");
+
+if (!isAdmin) {
+    List<String> allowedStudentIds = access.getAllowedStudents(currentUser);
+    // Filter your students list using allowedStudentIds
+    students.removeIf(s -> !allowedStudentIds.contains(s.studentID));
+}
+
+loadEnrollments();
+displayStudents();
 }
     
     private Map<String, Student> loadStudentInformation(String filename) {
@@ -507,16 +539,37 @@ private Map<String, List<String>> loadCurriculumForNextSem(String major) {
      * Displays all students in the panel
      */
     private void displayStudents() {
-        studentListPanel.removeAll();
-        
-        for (Student student : students) {
-            StudentRowPanel rowPanel = new StudentRowPanel(student);
-            studentListPanel.add(rowPanel);
+
+    studentListPanel.removeAll();
+
+    String currentUser = UserSession.userID;
+    boolean isAdmin = currentUser.startsWith("A");
+
+    AccessControlService access = new AccessControlService(
+            "src/data/Grades.txt",
+            "src/data/Course_Information.txt",
+            "src/data/Lecture_information.txt"
+    );
+
+    for (Student student : students) {
+
+        if (isAdmin) {
+            // Admin sees ALL students
+            studentListPanel.add(new StudentRowPanel(student));
+        } else {
+            // Lecturer sees ONLY their own students
+            boolean canAccess = access.canLecturerAccess(currentUser, student.studentID);
+
+            if (canAccess) {
+                studentListPanel.add(new StudentRowPanel(student));
+            }
         }
-        
-        studentListPanel.revalidate();
-        studentListPanel.repaint();
     }
+
+    studentListPanel.revalidate();
+    studentListPanel.repaint();
+}
+
 /**
  * Reads student data from CSV file and calculates CGPA
  *
@@ -793,15 +846,20 @@ class StudentRowPanel extends JPanel {
 }
 
     statusLabel.setFont(new Font("Arial", Font.BOLD, 16));
-    statusLabel.setForeground(student.isEligible 
-        ? new Color(0, 128, 0) 
-        : new Color(200, 0, 0));
 
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
         
         // Set background color based on eligibility
-        Color bgColor = student.isEligible ? new Color(240, 255, 240) : new Color(255, 240, 240);
+        Color bgColor;
+
+if (student.isEnrolled) {
+    bgColor = new Color(230, 240, 255); // light blue
+} else if (student.isEligible) {
+    bgColor = new Color(240, 255, 240); // light green
+} else {
+    bgColor = new Color(255, 240, 240); // light red
+}
         setBackground(bgColor);
         
         setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));
@@ -832,8 +890,18 @@ class StudentRowPanel extends JPanel {
         
         
         // CGPA label
-        JLabel cgpaLabel = new JLabel(String.format("CGPA: %.2f", student.cgpa));
-        cgpaLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+JLabel cgpaLabel;
+
+if (student.isEnrolled) {
+    cgpaLabel = new JLabel("CGPA: 0.00");
+    cgpaLabel.setForeground(new Color(70, 130, 180)); // Steel Blue
+} else {
+    cgpaLabel = new JLabel(String.format("CGPA: %.2f", student.cgpa));
+    cgpaLabel.setForeground(Color.BLACK);
+}
+
+cgpaLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+
         
         // Failed courses label
         JLabel failedLabel = new JLabel(String.format("Failed: %d", student.failedCourses));
@@ -885,6 +953,13 @@ checkBox.addActionListener(e -> student.isSelected = checkBox.isSelected());
         detailsPanel.add(coursesHeader);
         detailsPanel.add(Box.createVerticalStrut(8));
         
+        JLabel sem1Label = new JLabel("Semester 1:");
+        sem1Label.setFont(new Font("Arial", Font.BOLD, 14));
+        sem1Label.setAlignmentX(Component.LEFT_ALIGNMENT);
+        detailsPanel.add(sem1Label);
+        detailsPanel.add(Box.createVerticalStrut(5));
+
+        
         // Add each course
         for (Map.Entry<String, CourseGrade> entry : student.grades.entrySet()) {
         CourseGrade cg = entry.getValue();
@@ -903,6 +978,21 @@ checkBox.addActionListener(e -> student.isSelected = checkBox.isSelected());
         detailsPanel.add(courseLabel);
         detailsPanel.add(Box.createVerticalStrut(5));
     }
+
+        if (student.isEnrolled) {
+    detailsPanel.add(Box.createVerticalStrut(10));
+
+    JLabel sem2Label = new JLabel("Semester 2:");
+    sem2Label.setFont(new Font("Arial", Font.BOLD, 14));
+    sem2Label.setAlignmentX(Component.LEFT_ALIGNMENT);
+    detailsPanel.add(sem2Label);
+
+    JLabel sem2GpaLabel = new JLabel("   • GPA: 0.00");
+    sem2GpaLabel.setFont(new Font("Arial", Font.PLAIN, 15));
+    sem2GpaLabel.setForeground(new Color(70, 130, 180)); // blue, not failed
+    sem2GpaLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+    detailsPanel.add(sem2GpaLabel);
+}
 
         
         // Add CGPA calculation
