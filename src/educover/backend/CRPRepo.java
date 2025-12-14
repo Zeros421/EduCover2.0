@@ -99,7 +99,7 @@ public class CRPRepo {
                         taskId, studentId, courseCode, componentName,
                         weekRange, description, deadline, status
                 );
-            } else { // default to milestone
+            } else { 
                 task = new Milestone(
                         taskId, studentId, courseCode, componentName,
                         weekRange, description, deadline, status

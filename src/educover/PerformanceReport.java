@@ -46,7 +46,7 @@ public class PerformanceReport extends javax.swing.JFrame {
     private String loggedInInstructorID;       
     private List<String> instructorCourses;      
     private boolean isAdmin;
-    // CONSTRUCTOR
+ 
     public PerformanceReport() {
         this(null);  
     }
@@ -57,17 +57,17 @@ public class PerformanceReport extends javax.swing.JFrame {
 
         initComponents();
 
-        // Load all data first
+        
         allStudents = loadStudents("src/Data/Student_Information.txt");
         allCourses = loadCourses("src/Data/Course_Information.txt");
         allGrades = loadGrades("src/Data/grades.txt");
 
-        // Load instructor's courses if not admin
+       
         if (!isAdmin) {
             instructorCourses = loadInstructorCourses(instructorID);
             System.out.println("DEBUG: Instructor " + instructorID + " teaches courses: " + instructorCourses);
 
-            // Filter students to only show those in instructor's classes
+          
             allStudents = filterStudentsByInstructor();
             System.out.println("DEBUG: Found " + allStudents.size() + " students for instructor");
         }
@@ -101,7 +101,7 @@ public class PerformanceReport extends javax.swing.JFrame {
                     String courseID = parts[0].trim();           
                     String courseInstructorID = parts[1].trim(); 
 
-                    // If this course belongs to the logged-in instructor
+                 
                     if (courseInstructorID.equals(instructorID)) {
                         courses.add(courseID);
                     }
@@ -127,14 +127,14 @@ public class PerformanceReport extends javax.swing.JFrame {
         List<Student> filtered = new ArrayList<>();
         Set<String> studentIDs = new HashSet<>();
 
-        // Find all students who have grades in instructor's courses
+      
         for (GradeRecord grade : allGrades) {
             if (instructorCourses.contains(grade.getCourseID())) {
                 studentIDs.add(grade.getStudentID());
             }
         }
 
-        // Get student objects for these student IDs
+    
         for (Student student : allStudents) {
             if (studentIDs.contains(student.getStudentID())) {
                 filtered.add(student);
@@ -147,12 +147,12 @@ public class PerformanceReport extends javax.swing.JFrame {
     private void initializeStudentList() {
     listModel = new DefaultListModel<>();
     
-    // Add all students to the list
+
     for (Student s : allStudents) {
         listModel.addElement(s.getStudentID() + " - " + s.getFullName());
     }
     
-    // Set the model to the JList
+  
     jList1.setModel(listModel);
 
     jList1.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
@@ -215,7 +215,7 @@ public class PerformanceReport extends javax.swing.JFrame {
         for (GradeRecord g : allGrades) {
             if (g.getStudentID().equals(studentID)) {
 
-                // If instructor logged in, only show their courses
+             
                 if (!isAdmin && !instructorCourses.contains(g.getCourseID())) {
                     continue;  
                 }
@@ -236,10 +236,10 @@ public class PerformanceReport extends javax.swing.JFrame {
             }
         }
 
-        // Add empty row
+        
         model.addRow(new Object[]{"", "", "", "", ""});
 
-        // Add CGPA row
+    
         double cgpa = calculateCGPA(studentID);
         model.addRow(new Object[]{"", "", "", "CGPA:", String.format("%.2f", cgpa)});
     }
@@ -251,7 +251,7 @@ public class PerformanceReport extends javax.swing.JFrame {
         for (GradeRecord g : allGrades) {
             if (g.getStudentID().equals(studentID)) {
 
-                // If instructor logged in, only count their courses
+              
                 if (!isAdmin && !instructorCourses.contains(g.getCourseID())) {
                     continue;  
                 }
@@ -266,7 +266,7 @@ public class PerformanceReport extends javax.swing.JFrame {
 
         return totalCredits > 0 ? totalGradePoints / totalCredits : 0.0;
     }
-    //GET STUDENT EMAIL
+   
     private String getStudentEmail(String studentID) {
         try (BufferedReader br = new BufferedReader(new FileReader("src/Data/Student_Information.txt"))) {
             String line;
@@ -288,11 +288,11 @@ public class PerformanceReport extends javax.swing.JFrame {
         return null;
     }
         private boolean sendEmailWithAttachment(String toEmail, String studentName, File attachment) {
-        // Email configuration
+       
         final String FROM_EMAIL = "Simbaba2606@gmail.com";
         final String EMAIL_PASSWORD = "hyyqghpjsuyezgbl";
 
-        // Setup mail server properties
+    
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
@@ -301,7 +301,7 @@ public class PerformanceReport extends javax.swing.JFrame {
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
 
-        // Create session with authentication
+        
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -310,13 +310,13 @@ public class PerformanceReport extends javax.swing.JFrame {
         });
 
         try {
-            // Create message
+         
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(FROM_EMAIL));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
             message.setSubject("Academic Performance Report - " + studentName);
 
-            // Create message body
+           
             MimeBodyPart textPart = new MimeBodyPart();
             double cgpa = calculateCGPA(selectedStudent.getStudentID());
 
@@ -333,18 +333,18 @@ public class PerformanceReport extends javax.swing.JFrame {
 
             textPart.setText(emailBody);
 
-            // Attach PDF
+         
             MimeBodyPart attachmentPart = new MimeBodyPart();
             attachmentPart.attachFile(attachment);
 
-            // Combine parts
+           
             Multipart multipart = new MimeMultipart();
             multipart.addBodyPart(textPart);
             multipart.addBodyPart(attachmentPart);
 
             message.setContent(multipart);
 
-            // Send email
+          
             Transport.send(message);
 
             return true;
@@ -355,23 +355,23 @@ public class PerformanceReport extends javax.swing.JFrame {
         }
     }
         
-    //APPLY FILTER METHOD
+   
     private void applyFilters(String searchQuery, String sortOption) {
-        // Start with all students
+      
         filteredStudents = new ArrayList<>(allStudents);
 
-        // Apply search filter
+      
         if (!searchQuery.isEmpty()) {
             filteredStudents = searchStudents(searchQuery);
         }
 
-        // Apply sort
+    
         sortStudents(filteredStudents, sortOption);
 
-        // Update the list display
+    
         updateStudentList(filteredStudents);
 
-        // Update label
+      
         if (!searchQuery.isEmpty()) {
             label4.setText("Showing " + filteredStudents.size() + " of " + allStudents.size() + " students");
         } else {
@@ -383,25 +383,25 @@ public class PerformanceReport extends javax.swing.JFrame {
         String searchLower = query.toLowerCase();
 
         for (Student s : allStudents) {
-            // Search by student ID
+           
             if (s.getStudentID().toLowerCase().contains(searchLower)) {
                 results.add(s);
                 continue;
             }
 
-            // Search by first name
+           
             if (s.getFirstName().toLowerCase().contains(searchLower)) {
                 results.add(s);
                 continue;
             }
 
-            // Search by last name
+          
             if (s.getLastName().toLowerCase().contains(searchLower)) {
                 results.add(s);
                 continue;
             }
 
-            // Search by full name
+            
             if (s.getName().toLowerCase().contains(searchLower)) {
                 results.add(s);
             }
@@ -410,8 +410,7 @@ public class PerformanceReport extends javax.swing.JFrame {
         return results;
     }
 
-// SORT STUDENTS METHOD
-// Add this method to sort students
+
     private void sortStudents(List<Student> students, String sortOption) {
         switch (sortOption) {
             case "Name (A-Z)":
@@ -435,7 +434,7 @@ public class PerformanceReport extends javax.swing.JFrame {
         }
     }
 
-// STUDENT LIST METHOD
+
     private void updateStudentList(List<Student> students) {
         listModel.clear();
 
@@ -443,26 +442,26 @@ public class PerformanceReport extends javax.swing.JFrame {
             listModel.addElement(s.getStudentID() + " - " + s.getName());
         }
 
-        // Clear selection
+      
         jList1.clearSelection();
         selectedStudent = null;
         clearTable();
     }
-    //PDF GENERATION
+ 
     
     private void generatePDFReport(File file, Student student) throws Exception {
         Document document = new Document(PageSize.A4, 50, 50, 50, 50);
         PdfWriter.getInstance(document, new FileOutputStream(file));
         document.open();
 
-        // Title
+      
         Font titleFont = new Font(Font.FontFamily.HELVETICA, 22, Font.BOLD);
         Paragraph title = new Paragraph("Academic Performance Report", titleFont);
         title.setAlignment(Element.ALIGN_CENTER);
         title.setSpacingAfter(25);
         document.add(title);
 
-        // Student Information
+       
         Font normalFont = new Font(Font.FontFamily.HELVETICA, 12);
         Font boldFont = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
         Font labelFont = new Font(Font.FontFamily.HELVETICA, 11, Font.BOLD);
@@ -471,7 +470,7 @@ public class PerformanceReport extends javax.swing.JFrame {
         document.add(new Paragraph("Student ID: " + student.getStudentID(), normalFont));
         document.add(new Paragraph("Program: " + student.getProgram(), normalFont));
 
-        // Add instructor info if available
+      
         if (!isAdmin) {
             document.add(new Paragraph("Instructor ID: " + loggedInInstructorID, normalFont));
             document.add(new Paragraph("Report Type: Instructor-Specific Courses Only", normalFont));
@@ -481,25 +480,25 @@ public class PerformanceReport extends javax.swing.JFrame {
 
         document.add(new Paragraph(" ")); 
 
-        // Course Table
+     
         PdfPTable table = new PdfPTable(5);
         table.setWidthPercentage(100);
         table.setSpacingBefore(15);
         table.setSpacingAfter(15);
         table.setWidths(new float[]{2f, 3.5f, 1.5f, 1.2f, 1.8f});
 
-        // Table Headers
+ 
         addPDFTableHeader(table, "Course Code", labelFont);
         addPDFTableHeader(table, "Course Title", labelFont);
         addPDFTableHeader(table, "Credit Hours", labelFont);
         addPDFTableHeader(table, "Grade", labelFont);
         addPDFTableHeader(table, "Credit Point", labelFont);
 
-        // Table Data
+    
         for (GradeRecord g : allGrades) {
             if (g.getStudentID().equals(student.getStudentID())) {
 
-                // Filter by instructor's courses
+              
                 if (!isAdmin && !instructorCourses.contains(g.getCourseID())) {
                     continue;  
                 }
@@ -520,7 +519,7 @@ public class PerformanceReport extends javax.swing.JFrame {
 
         document.add(table);
 
-        // CGPA
+  
         double cgpa = calculateCGPA(student.getStudentID());
         Paragraph cgpaParagraph = new Paragraph(
                 "Cumulative GPA (CGPA): " + String.format("%.2f", cgpa),
@@ -529,7 +528,7 @@ public class PerformanceReport extends javax.swing.JFrame {
         cgpaParagraph.setSpacingBefore(10);
         document.add(cgpaParagraph);
 
-        // Footer
+    
         document.add(new Paragraph(" "));
         Font footerFont = new Font(Font.FontFamily.HELVETICA, 9, Font.ITALIC);
         Paragraph footer = new Paragraph(
@@ -559,7 +558,7 @@ public class PerformanceReport extends javax.swing.JFrame {
         table.addCell(cell);
     }
 
-    //DATA LOADER METHODS 
+   
     
     private List<Student> loadStudents(String filepath) {
         List<Student> students = new ArrayList<>();
@@ -575,10 +574,10 @@ public class PerformanceReport extends javax.swing.JFrame {
                 String[] parts = line.split("\\|");
                 if (parts.length >= 4) {
                     students.add(new Student(
-                            parts[0].trim(), // StudentID
-                            parts[1].trim(), // FirstName
-                            parts[2].trim(), // LastName
-                            parts[3].trim() // Program
+                            parts[0].trim(), 
+                            parts[1].trim(), 
+                            parts[2].trim(), 
+                            parts[3].trim() 
                     ));
                 }
             }
@@ -644,7 +643,7 @@ public class PerformanceReport extends javax.swing.JFrame {
         return grades;
     }
 
-    // INNER CLASSES
+  
     
     class Student {
 
@@ -909,7 +908,7 @@ public class PerformanceReport extends javax.swing.JFrame {
     }
         
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // Check if student is selected
+      
         if (selectedStudent == null) {
             javax.swing.JOptionPane.showMessageDialog(this, 
                 "Please select a student from the list first!", 
@@ -956,7 +955,7 @@ public class PerformanceReport extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // Check if student is selected
+
         if (selectedStudent == null) {
             javax.swing.JOptionPane.showMessageDialog(this, 
                 "Please select a student from the list first!", 
@@ -965,10 +964,9 @@ public class PerformanceReport extends javax.swing.JFrame {
             return;
         }
         
-        // Filter table to show only selected student's data
+
         filterTableByStudent(selectedStudent.getStudentID());
-        
-        // Calculate and show CGPA
+       
         double cgpa = calculateCGPA(selectedStudent.getStudentID());
         
         javax.swing.JOptionPane.showMessageDialog(this, 
@@ -981,7 +979,7 @@ public class PerformanceReport extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // Check if student is selected
+
         if (selectedStudent == null) {
             javax.swing.JOptionPane.showMessageDialog(this,
                     "Please select a student from the list first!",
@@ -1000,7 +998,7 @@ public class PerformanceReport extends javax.swing.JFrame {
             return;
         }
 
-        // Ask for confirmation
+    
         int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
                 "Send academic report to:\n" + selectedStudent.getFullName() + "\n" + studentEmail + "\n\nContinue?",
                 "Confirm Email",
@@ -1010,7 +1008,7 @@ public class PerformanceReport extends javax.swing.JFrame {
             return;
         }
 
-        // Show progress
+     
         javax.swing.JOptionPane progressPane = new javax.swing.JOptionPane(
                 "Sending email to " + selectedStudent.getFullName() + "...\nPlease wait.",
                 javax.swing.JOptionPane.INFORMATION_MESSAGE,
@@ -1021,21 +1019,21 @@ public class PerformanceReport extends javax.swing.JFrame {
         );
         javax.swing.JDialog progressDialog = progressPane.createDialog(this, "Sending Email");
 
-        // Send email in background thread
+       
         new Thread(() -> {
             try {
-                // Generate PDF first
+              
                 File tempPDF = new File("temp_" + selectedStudent.getStudentID() + "_report.pdf");
                 generatePDFReport(tempPDF, selectedStudent);
 
-                // Send email with attachment
+            
                 boolean success = sendEmailWithAttachment(
                         studentEmail,
                         selectedStudent.getFullName(),
                         tempPDF
                 );
 
-                // Close progress dialog
+         
                 progressDialog.dispose();
 
                 if (success) {
@@ -1044,7 +1042,7 @@ public class PerformanceReport extends javax.swing.JFrame {
                             "Success",
                             javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
-                    // Delete temp file
+                
                     tempPDF.delete();
                 } else {
                     javax.swing.JOptionPane.showMessageDialog(this,
@@ -1093,25 +1091,25 @@ public class PerformanceReport extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // Create a custom dialog with search and sort options
+    
         JDialog filterDialog = new JDialog(this, "Filter Students", true);
         filterDialog.setLayout(new java.awt.BorderLayout(10, 10));
         filterDialog.setSize(400, 250);
         filterDialog.setLocationRelativeTo(this);
 
-        // Main panel
+
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new java.awt.GridLayout(4, 1, 10, 10));
         mainPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Search section
+      
         JPanel searchPanel = new JPanel(new java.awt.BorderLayout(5, 5));
         JLabel searchLabel = new JLabel("Search:");
         JTextField searchField = new JTextField(currentSearchQuery);
         searchPanel.add(searchLabel, java.awt.BorderLayout.WEST);
         searchPanel.add(searchField, java.awt.BorderLayout.CENTER);
 
-        // Sort options section
+      
         JPanel sortPanel = new JPanel(new java.awt.BorderLayout(5, 5));
         JLabel sortLabel = new JLabel("Sort by:");
         JComboBox<String> sortCombo = new JComboBox<>(new String[]{
@@ -1123,11 +1121,10 @@ public class PerformanceReport extends javax.swing.JFrame {
         sortPanel.add(sortLabel, java.awt.BorderLayout.WEST);
         sortPanel.add(sortCombo, java.awt.BorderLayout.CENTER);
 
-        // Info label
         JLabel infoLabel = new JLabel("Search by name or student ID", JLabel.CENTER);
         infoLabel.setFont(new java.awt.Font("Arial", java.awt.Font.ITALIC, 11));
 
-        // Buttons panel
+     
         JPanel buttonPanel = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
         JButton applyButton = new JButton("Apply");
         JButton resetButton = new JButton("Reset");
@@ -1137,7 +1134,7 @@ public class PerformanceReport extends javax.swing.JFrame {
         buttonPanel.add(cancelButton);
         buttonPanel.add(applyButton);
 
-        // Add to main panel
+       
         mainPanel.add(searchPanel);
         mainPanel.add(sortPanel);
         mainPanel.add(infoLabel);
@@ -1145,35 +1142,35 @@ public class PerformanceReport extends javax.swing.JFrame {
 
         filterDialog.add(mainPanel);
 
-        // Apply button action
+       
         applyButton.addActionListener(e -> {
             currentSearchQuery = searchField.getText().trim();
             String sortOption = (String) sortCombo.getSelectedItem();
 
-            // Apply filters
+         
             applyFilters(currentSearchQuery, sortOption);
 
             filterDialog.dispose();
         });
 
-        // Reset button action
+    
         resetButton.addActionListener(e -> {
             currentSearchQuery = "";
             searchField.setText("");
             sortCombo.setSelectedIndex(0);
 
-            // Reset to show all students sorted by name
+        
             applyFilters("", "Name (A-Z)");
 
             filterDialog.dispose();
         });
 
-        // Cancel button action
+  
         cancelButton.addActionListener(e -> {
             filterDialog.dispose();
         });
 
-        // Show dialog
+        
         filterDialog.setVisible(true);
    
     }//GEN-LAST:event_jButton3ActionPerformed

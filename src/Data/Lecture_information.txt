@@ -1,15 +1,9 @@
 InstructorID|Name|Email|Password|role|Status
 I101|Dr.Brown|TP074871@mail.apu.edu.my|1234|Instructor|Active
 I102|Dr.Dya|TP0733771@mail.apu.edu.my|Aizik@421|Instructor|null
-A103|Dr.Johnson|Aizik.ad421@gmail.com|Aizik@421|Admin|null
+A103|Dr.IZ|Aizik.ad421@gmail.com|Aizik@421|Admin|null
 I104|Dr.Miller|TP073354@mail.apu.edu.my|Aizi@421|Instructor|null
 I105|Dr.Kumar|Kumar@gmail.com|1234|Instructor|Active
 I106|Prof.Chen|Chen@gmail.com|1234|Instructor|Activve
 I107|Prof.Davis|Davis@gmail.com|1234|Instructor|Active
 I108|Prof.Smith|Smith@gmail.com|1234|Instructor|Active
-<<<<<<< HEAD
-A101|Prof.Bob|Bob@gmail.com|1234|Instructor|Active
-=======
-
-
->>>>>>> origin/master

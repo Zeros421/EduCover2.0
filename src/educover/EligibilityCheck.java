@@ -22,7 +22,7 @@ import educover.backend.UserSession;
     public class EligibilityCheck extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(EligibilityCheck.class.getName());
-    private ArrayList<Student> students; // Reverting back to ArrayList for simplicity
+    private ArrayList<Student> students; 
     private JPanel studentListPanel;
     private AccessControlService access;
 
@@ -32,7 +32,9 @@ import educover.backend.UserSession;
      */
     public EligibilityCheck() {
         initComponents();
-        // Initialize access control service
+        
+        
+       
 access = new AccessControlService(
         "src/data/Grades.txt",
         "src/data/Course_Information.txt",
@@ -40,7 +42,7 @@ access = new AccessControlService(
 );
 
         students = new ArrayList<>();
-        loadAndDisplayStudents(); // This method is simple now
+        loadAndDisplayStudents(); // 
     }
     
 
@@ -237,7 +239,7 @@ access = new AccessControlService(
     }
 
     if (count > 0) {
-        saveEnrollments(); // persist after enrollment
+        saveEnrollments(); 
         saveStudentInformation();
         displayStudents();
         JOptionPane.showMessageDialog(this, count + " student(s) successfully enrolled!", "Enrollment Complete", JOptionPane.INFORMATION_MESSAGE);
@@ -252,7 +254,7 @@ private void saveStudentInformation() {
     List<String> lines = new ArrayList<>();
 
     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-        // Read the header first
+        
         String header = br.readLine();
         lines.add(header);
 
@@ -260,7 +262,7 @@ private void saveStudentInformation() {
         while ((line = br.readLine()) != null) {
             String[] parts = line.split("\\|");
             if (parts.length < 6) {
-                lines.add(line); // leave malformed lines untouched
+                lines.add(line); 
                 continue;
             }
 
@@ -275,7 +277,7 @@ private void saveStudentInformation() {
                 String firstName = names.length > 0 ? names[0] : "";
                 String lastName = names.length > 1 ? names[1] : "";
 
-                // Replace the line with updated year
+                
                 lines.add(String.join("|",
                         s.studentID,
                         firstName,
@@ -285,7 +287,7 @@ private void saveStudentInformation() {
                         s.email
                 ));
             } else {
-                lines.add(line); // keep the original line
+                lines.add(line); 
             }
         }
 
@@ -294,7 +296,7 @@ private void saveStudentInformation() {
         return;
     }
 
-    // Write all lines back
+    
     try (PrintWriter pw = new PrintWriter(new FileWriter(file))) {
         for (String l : lines) {
             pw.println(l);
@@ -344,7 +346,7 @@ private void loadEnrollments() {
         case "freshman": return "Sophomore";
         case "sophomore": return "Junior";
         case "junior": return "Senior";
-        default: return currentYear; // fallback if unknown
+        default: return currentYear; 
     }
 }
     
@@ -365,10 +367,10 @@ private void enrollStudent(Student student) {
     student.isEnrolled = true;
     student.isSelected = false;
 
-    // Upgrade year
+    
     student.year = getNextYear(student.year);
 
-    // Log enrollment
+    
     Map<String, List<String>> curriculum = loadCurriculumForNextSem(majorMapping.getOrDefault(student.major, student.major));
     if (curriculum.containsKey(majorMapping.getOrDefault(student.major, student.major))) {
         for (String courseID : curriculum.get(majorMapping.getOrDefault(student.major, student.major))) {
@@ -383,7 +385,7 @@ private Map<String, List<String>> loadCurriculumForNextSem(String major) {
     File file = new File("src/data/Curriculum_Y1S2.txt");
 
     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-        br.readLine(); // skip header
+        br.readLine(); 
         String line;
 
         while ((line = br.readLine()) != null) {
@@ -412,23 +414,23 @@ private Map<String, List<String>> loadCurriculumForNextSem(String major) {
     ListOfStudents.setViewportView(studentListPanel);
     ListOfStudents.getVerticalScrollBar().setUnitIncrement(16);
 
-    // Load data from 3 separate files
+    
     Map<String, Student> studentInfo = loadStudentInformation("src/data/Student_Information.txt");
     Map<String, CourseInfo> courseInfo = loadCourseInformation("src/data/Course_Information.txt");
 
     loadGrades("src/data/grades.txt", studentInfo, courseInfo);
 
-   // Convert to list for display and compute eligibility
+   
 students = new ArrayList<>(studentInfo.values());
 computeEligibility();
 
-// Filter for lecturer if not admin
-String currentUser = UserSession.userID;  // Make sure UserSession is working
+
+String currentUser = UserSession.userID;  
 boolean isAdmin = currentUser.startsWith("A");
 
 if (!isAdmin) {
     List<String> allowedStudentIds = access.getAllowedStudents(currentUser);
-    // Filter your students list using allowedStudentIds
+   
     students.removeIf(s -> !allowedStudentIds.contains(s.studentID));
 }
 
@@ -440,14 +442,14 @@ displayStudents();
         Map<String, Student> students = new LinkedHashMap<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-            br.readLine(); // <--- skip header
+            br.readLine(); 
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split("\\|");
 
                 if (parts.length >= 6) {
                     String studentID = parts[0].trim();
-                    String fullName = parts[1].trim() + " " + parts[2].trim(); // FirstName + LastName
+                    String fullName = parts[1].trim() + " " + parts[2].trim(); 
                     String major = parts[3].trim();
                     String year = parts[4].trim();
                     String email = parts[5].trim();
@@ -537,7 +539,7 @@ displayStudents();
             s.cgpa = (totalCredits > 0) ? totalPoints / totalCredits : 0.0;
             s.failedCourses = fails;
 
-            // Eligibility conditions
+            
             s.isEligible = (s.cgpa >= 2.0 && s.failedCourses <= 3);
         }
     }
@@ -561,10 +563,10 @@ displayStudents();
     for (Student student : students) {
 
         if (isAdmin) {
-            // Admin sees ALL students
+            
             studentListPanel.add(new StudentRowPanel(student));
         } else {
-            // Lecturer sees ONLY their own students
+            
             boolean canAccess = access.canLecturerAccess(currentUser, student.studentID);
 
             if (canAccess) {
@@ -606,21 +608,21 @@ displayStudents();
     }
 
     private void showFilterPopup() {
-    // Create a modal dialog
+    
     JDialog filterDialog = new JDialog(this, "Filter Students", true);
     filterDialog.setSize(450, 350);
     filterDialog.setLocationRelativeTo(this);
     filterDialog.setLayout(new BorderLayout(15, 15));
     filterDialog.getContentPane().setBackground(Color.WHITE);
 
-    // Padding panel around everything
+    
     JPanel paddingPanel = new JPanel();
     paddingPanel.setLayout(new BorderLayout(15, 15));
     paddingPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
     paddingPanel.setBackground(Color.WHITE);
     filterDialog.add(paddingPanel, BorderLayout.CENTER);
 
-    // Top panel - search bar
+    
     JPanel searchPanel = new JPanel(new BorderLayout(5, 5));
     searchPanel.setBackground(Color.WHITE);
 
@@ -635,7 +637,7 @@ displayStudents();
     searchPanel.add(searchField, BorderLayout.CENTER);
     paddingPanel.add(searchPanel, BorderLayout.NORTH);
 
-    // Center panel - radio buttons
+    
     JPanel radioPanel = new JPanel(new GridLayout(3, 1, 10, 10));
     radioPanel.setBackground(Color.WHITE);
     radioPanel.setBorder(BorderFactory.createTitledBorder(
@@ -651,7 +653,7 @@ displayStudents();
     JRadioButton eligibleBtn = new JRadioButton("Eligible Students");
     JRadioButton nonEligibleBtn = new JRadioButton("Non-Eligible Students");
 
-    // Only one selectable at a time
+    
     ButtonGroup group = new ButtonGroup();
     group.add(allBtn);
     group.add(enrolledBtn);
@@ -676,7 +678,7 @@ displayStudents();
 
     paddingPanel.add(radioPanel, BorderLayout.CENTER);
 
-    // Bottom panel - Apply button
+    
     JPanel bottomPanel = new JPanel();
     bottomPanel.setBackground(Color.WHITE);
     JButton applyBtn = new JButton("Apply Filter");
@@ -689,7 +691,7 @@ displayStudents();
 
     paddingPanel.add(bottomPanel, BorderLayout.SOUTH);
 
-    // Action for Apply button
+    
     applyBtn.addActionListener(e -> {
         String searchText = searchField.getText().trim().toLowerCase();
 
@@ -781,7 +783,7 @@ class Student {
     boolean isEligible;
     boolean isSelected;
 
-    boolean isEnrolled = false; // <-- new
+    boolean isEnrolled = false; 
 
     Student(String id, String name, String major, String year, String email) {
         this.studentID = id;
@@ -793,7 +795,7 @@ class Student {
 }
 
 
-// === NEW CLASS: Lecture ===
+
 class Lecture {
     String instructorID;
     String name;
@@ -808,7 +810,7 @@ class Lecture {
     }
 }
 
-// === NEW CLASS: CurriculumRow ===
+
 class CurriculumRow {
     String majorID;
     String courseID;
@@ -857,7 +859,7 @@ class StudentRowPanel extends JPanel {
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.LIGHT_GRAY));
         
-        // Set background color based on eligibility
+        
         Color bgColor;
 
 if (student.isEnrolled) {
@@ -872,12 +874,12 @@ if (student.isEnrolled) {
         setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));
         setPreferredSize(new Dimension(1810, 60));
         
-        // Main row panel
+        
         JPanel mainRow = new JPanel(new BorderLayout(10, 0));
         mainRow.setBackground(bgColor);
         mainRow.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
         
-        // Left side - Student info
+    
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
         leftPanel.setBackground(bgColor);
         
@@ -891,12 +893,12 @@ if (student.isEnrolled) {
         leftPanel.add(nameLabel);
         leftPanel.add(idLabel);
         
-        // Right side panel
+        
         JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
         rightPanel.setBackground(bgColor);
         
         
-        // CGPA label
+        
 JLabel cgpaLabel;
 
 if (student.isEnrolled) {
@@ -910,24 +912,25 @@ if (student.isEnrolled) {
 cgpaLabel.setFont(new Font("Arial", Font.PLAIN, 18));
 
         
-        // Failed courses label
+        
         JLabel failedLabel = new JLabel(String.format("Failed: %d", student.failedCourses));
         failedLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         failedLabel.setForeground(student.failedCourses > 3 ? Color.RED : Color.GRAY);
         
-        // Dropdown button
+        
         dropdownBtn = new JButton("▼");
         dropdownBtn.setFont(new Font("Arial", Font.PLAIN, 16));
         dropdownBtn.setPreferredSize(new Dimension(50, 35));
         dropdownBtn.setFocusPainted(false);
         dropdownBtn.addActionListener(e -> toggleDetails());
         
-        // Checkbox (only enabled for eligible students)
+        
+       
         checkBox = new JCheckBox();
 checkBox.setBackground(bgColor);
 checkBox.setPreferredSize(new Dimension(30, 30));
-checkBox.setEnabled(student.isEligible && !student.isEnrolled); // disable if enrolled
-checkBox.setSelected(student.isSelected); // <-- restore selection
+checkBox.setEnabled(student.isEligible && !student.isEnrolled); 
+checkBox.setSelected(student.isSelected); 
 checkBox.addActionListener(e -> student.isSelected = checkBox.isSelected());
         
         rightPanel.add(statusLabel);
@@ -939,21 +942,21 @@ checkBox.addActionListener(e -> student.isSelected = checkBox.isSelected());
         mainRow.add(leftPanel, BorderLayout.WEST);
         mainRow.add(rightPanel, BorderLayout.EAST);
         
-        // Details panel (hidden by default)
+        
         detailsPanel = new JPanel();
         detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
         detailsPanel.setBackground(new Color(245, 245, 245));
         detailsPanel.setBorder(BorderFactory.createEmptyBorder(15, 30, 15, 30));
         detailsPanel.setVisible(false);
         
-        // Add student details
+        
         addDetailRow("Major:", student.major);
         addDetailRow("Year:", student.year);
         addDetailRow("Email:", student.email);
         
         detailsPanel.add(Box.createVerticalStrut(10));
         
-        // Add course grades header
+        
         JLabel coursesHeader = new JLabel("Course Grades:");
         coursesHeader.setFont(new Font("Arial", Font.BOLD, 16));
         coursesHeader.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -967,17 +970,17 @@ checkBox.addActionListener(e -> student.isSelected = checkBox.isSelected());
         detailsPanel.add(Box.createVerticalStrut(5));
 
         
-        // Add each course
+        
         for (Map.Entry<String, CourseGrade> entry : student.grades.entrySet()) {
         CourseGrade cg = entry.getValue();
-        String courseName = entry.getKey(); // if you want the CourseID, or look up name from CourseInfo
+        String courseName = entry.getKey(); 
 
         JLabel courseLabel = new JLabel(String.format("   • %s: %.1f GPA (%d credits)", 
             courseName, cg.gpa, cg.credits));
         courseLabel.setFont(new Font("Arial", Font.PLAIN, 15));
         courseLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-    // Color code failing grades (below 1.0)
+    
         if (cg.gpa < 2.0) {
             courseLabel.setForeground(Color.RED);
         }
@@ -996,13 +999,13 @@ checkBox.addActionListener(e -> student.isSelected = checkBox.isSelected());
 
     JLabel sem2GpaLabel = new JLabel("   • GPA: 0.00");
     sem2GpaLabel.setFont(new Font("Arial", Font.PLAIN, 15));
-    sem2GpaLabel.setForeground(new Color(70, 130, 180)); // blue, not failed
+    sem2GpaLabel.setForeground(new Color(70, 130, 180)); 
     sem2GpaLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
     detailsPanel.add(sem2GpaLabel);
 }
 
         
-        // Add CGPA calculation
+       
         detailsPanel.add(Box.createVerticalStrut(10));
         JLabel cgpaCalc = new JLabel(String.format("Calculated CGPA: %.2f", student.cgpa));
         cgpaCalc.setFont(new Font("Arial", Font.BOLD, 15));
@@ -1038,7 +1041,7 @@ checkBox.addActionListener(e -> student.isSelected = checkBox.isSelected());
         revalidate();
         repaint();
         
-        // Update parent container
+       
         Container parent = getParent();
         if (parent != null) {
             parent.revalidate();
@@ -1068,7 +1071,7 @@ public void markAsEnrolled() {
 
 public void disableCheckbox() {
     student.isSelected = false;
-    student.isEnrolled = true; // mark enrolled
+    student.isEnrolled = true; 
     checkBox.setSelected(false);
     checkBox.setEnabled(false);
     statusLabel.setText("✅ ENROLLED");

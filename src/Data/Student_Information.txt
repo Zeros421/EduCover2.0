@@ -6,11 +6,11 @@ S004|Ivan|Chen|Philosophy|Freshman|ivan.chen@university.edu
 S005|Bob|Smith|Statistics|Sophomore|bob.smith@university.edu
 S006|Quinn|Chen|Engineering|Freshman|quinn.chen@university.edu
 S007|Oscar|Smith|Philosophy|Freshman|oscar.smith@university.edu
-S008|Bob|Chen|Engineering|Sophomore|bob.chen@university.edu
+S008|Bob|Chen|Engineering|Freshman|bob.chen@university.edu
 S009|Rachel|Davis|Physics|Freshman|rachel.davis@university.edu
-S010|Charlie|Miller|Computer Science|Sophomore|charlie.miller@university.edu
+S010|Charlie|Miller|Computer Science|Freshman|charlie.miller@university.edu
 S011|Charlie|Brown|Engineering|Freshman|charlie.brown@university.edu
-S012|Quinn|Chen|Engineering|Sophomore|quinn.chen@university.edu
+S012|Quinn|Chen|Engineering|Freshman|quinn.chen@university.edu
 S013|Ivan|Lee|Engineering|Freshman|ivan.lee@university.edu
 S014|Diana|Brown|Economics|Freshman|diana.brown@university.edu
 S015|Alice|Wilson|Engineering|Freshman|alice.wilson@university.edu
