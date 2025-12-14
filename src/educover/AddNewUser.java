@@ -4,25 +4,25 @@
  */
 package educover;
 
+import educover.backend.AddUser;
 import educover.backend.ProfileInfo;
 import educover.backend.UpdateProfile;
-import educover.backend.UserSession;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author aizik
  */
-public class EditProfile extends javax.swing.JFrame {
+public class AddNewUser extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(EditProfile.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AddNewUser.class.getName());
 
     /**
-     * Creates new form EditProfile
+     * Creates new form AddNewUsers
      */
-    public EditProfile() {
+    public AddNewUser() {
         initComponents();
-        loadUserData();
     }
 
     /**
@@ -36,21 +36,18 @@ public class EditProfile extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        IDLabel = new javax.swing.JLabel();
         NameLabel = new javax.swing.JLabel();
         EmailLabel = new javax.swing.JLabel();
         PasswordLabel = new javax.swing.JLabel();
         RoleLabel = new javax.swing.JLabel();
         EditProfileButton = new javax.swing.JButton();
-        IDTextField = new javax.swing.JTextField();
         NameTextField = new javax.swing.JTextField();
         EmailTextField = new javax.swing.JTextField();
-        RoleTextField = new javax.swing.JTextField();
+        Close = new javax.swing.JButton();
         PasswordField = new javax.swing.JPasswordField();
-        BackToHome = new javax.swing.JButton();
+        RoleJComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(1920, 1080));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -58,12 +55,9 @@ public class EditProfile extends javax.swing.JFrame {
         jLabel1.setBackground(new java.awt.Color(75, 100, 146));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Profile");
+        jLabel1.setText("New User ");
         jLabel1.setMaximumSize(new java.awt.Dimension(800, 64));
         jLabel1.setPreferredSize(new java.awt.Dimension(800, 64));
-
-        IDLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        IDLabel.setText("ID:");
 
         NameLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         NameLabel.setText("Name:");
@@ -80,47 +74,27 @@ public class EditProfile extends javax.swing.JFrame {
         EditProfileButton.setBackground(new java.awt.Color(45, 59, 85));
         EditProfileButton.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         EditProfileButton.setForeground(new java.awt.Color(255, 255, 255));
-        EditProfileButton.setText("Edit Profile");
+        EditProfileButton.setText("Add");
         EditProfileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EditProfileButtonActionPerformed(evt);
             }
         });
 
-        IDTextField.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        IDTextField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
-        IDTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                IDTextFieldActionPerformed(evt);
-            }
-        });
-
         NameTextField.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         NameTextField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
-        NameTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NameTextFieldActionPerformed(evt);
-            }
-        });
 
         EmailTextField.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         EmailTextField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
-        EmailTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EmailTextFieldActionPerformed(evt);
-            }
-        });
 
-        RoleTextField.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        RoleTextField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
-        RoleTextField.addActionListener(new java.awt.event.ActionListener() {
+        Close.setText("Close");
+        Close.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RoleTextFieldActionPerformed(evt);
+                CloseActionPerformed(evt);
             }
         });
 
         PasswordField.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        PasswordField.setText("jPasswordField1");
         PasswordField.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         PasswordField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -128,14 +102,7 @@ public class EditProfile extends javax.swing.JFrame {
             }
         });
 
-        BackToHome.setBackground(new java.awt.Color(45, 59, 85));
-        BackToHome.setForeground(new java.awt.Color(255, 255, 255));
-        BackToHome.setText("Back to Home");
-        BackToHome.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BackToHomeActionPerformed(evt);
-            }
-        });
+        RoleJComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lecture", "Admin" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -144,43 +111,38 @@ public class EditProfile extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(271, 271, 271)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(75, 75, 75)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(PasswordLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
                             .addComponent(RoleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(EmailLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(NameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(IDLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(NameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(60, 60, 60)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(IDTextField)
                             .addComponent(NameTextField)
                             .addComponent(EmailTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                            .addComponent(RoleTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                            .addComponent(PasswordField)))
+                            .addComponent(PasswordField)
+                            .addComponent(RoleJComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(295, 295, 295)
                         .addComponent(EditProfileButton))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(BackToHome, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap()
+                        .addComponent(Close, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(205, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 189, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(165, 165, 165))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(BackToHome, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(16, 16, 16)
+                .addComponent(Close, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(IDLabel)
-                    .addComponent(IDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                .addGap(103, 103, 103)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(NameLabel)
                     .addComponent(NameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -195,115 +157,75 @@ public class EditProfile extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(RoleLabel)
-                    .addComponent(RoleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                    .addComponent(RoleJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addComponent(EditProfileButton)
                 .addGap(194, 194, 194))
         );
 
-        PasswordField.getAccessibleContext().setAccessibleName("PasswordField");
+        RoleJComboBox.getAccessibleContext().setAccessibleName("RoleJComboBox");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(610, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(621, 621, 621))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(95, 95, 95)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(285, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void loadUserData (){
-        IDTextField.setText(UserSession.userID);
-        NameTextField.setText(UserSession.userName);
-        EmailTextField.setText(UserSession.userEmail);
-        PasswordField.setText(UserSession.userPassword);
-        RoleTextField.setText(UserSession.userType);
-
-        IDTextField.setEditable(false);
-        RoleTextField.setEditable(false);
-    }
-    
-    private static boolean isValidPassword(String password){
-        boolean hasUppercase = password.matches(".*[A-Z].*");
-        boolean hasSpecialChar = password.matches(".*[!@#$%^&*()_+\\-\\=\\[\\]{};':\"\\\\|,.<>/?].*");
-        return hasUppercase && hasSpecialChar;
-    }
     private void EditProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditProfileButtonActionPerformed
-        String password = new String (PasswordField.getPassword()).trim();
-        String newName = NameTextField.getText().trim(); 
-        String newEmail = EmailTextField.getText().trim(); 
-        
-        if(!isValidPassword(password)){
-            JOptionPane.showMessageDialog(this, "Please make sure that your password contains specil charaters and one uppercase letter", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (!newEmail.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")){
-            JOptionPane.showMessageDialog(this, "please enter a vaild email address", "Error", JOptionPane.ERROR_MESSAGE);
+    String password = new String (PasswordField.getPassword()).trim();
+    String newName = NameTextField.getText().trim();
+    String newEmail = EmailTextField.getText().trim();
+    String role = RoleJComboBox.getSelectedItem().toString();
+
+
+    // Validate email
+    if (!newEmail.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+        JOptionPane.showMessageDialog(this, "Please enter a valid email address", "Error", JOptionPane.ERROR_MESSAGE);
         return;
-        }
-        
-        if(newEmail.isBlank() || newName.isBlank() || password.isBlank()){
-            JOptionPane.showMessageDialog(this, "Please make sure all information is filled in before updaing new information", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    // Validate fields are not empty
+    if (newEmail.isBlank() || newName.isBlank()) {
+        JOptionPane.showMessageDialog(this, "Please make sure all information is filled in before updating", "Error", JOptionPane.ERROR_MESSAGE);
         return;
-        }
-        
-        ProfileInfo.userName = newName ;
-        ProfileInfo.userEmail = newEmail;
-        ProfileInfo.userPassword = password;
-        
-        UserSession.userName = newName;
-        UserSession.userEmail = newEmail;
-        UserSession.userPassword = password;
-        
-        UpdateProfile.updateProfile();
-        
-        
-        JOptionPane.showMessageDialog(this, "Profile has been Successfully updated!");
+    }
+
+
+    ProfileInfo.userName = newName ;
+    ProfileInfo.userEmail = newEmail;
+    ProfileInfo.userType = role;
+    ProfileInfo.userPassword = password;
+    ProfileInfo.userStatus = "Active";
+
+
+   AddUser.addUser();
+
+    JOptionPane.showMessageDialog(this, "Profile has been successfully updated!");
+
+    java.awt.Window window = javax.swing.SwingUtilities.getWindowAncestor(this);
+    if (window != null) {
+        window.dispose();
+    }
     }//GEN-LAST:event_EditProfileButtonActionPerformed
 
-    private void IDTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IDTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_IDTextFieldActionPerformed
-
-    private void NameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NameTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_NameTextFieldActionPerformed
-
-    private void EmailTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EmailTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_EmailTextFieldActionPerformed
-
-    private void RoleTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RoleTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_RoleTextFieldActionPerformed
+    private void CloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseActionPerformed
+        UserManagement management = new UserManagement();
+        management.setVisible(true);
+        management.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.dispose();
+    }//GEN-LAST:event_CloseActionPerformed
 
     private void PasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasswordFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_PasswordFieldActionPerformed
-
-    private void BackToHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackToHomeActionPerformed
-        if (UserSession.userID.startsWith("A")) {
-            AdminHomePage adminHome  = new AdminHomePage();
-            adminHome.setVisible(true);
-            this.dispose();
-            return;
-        }
-
-        HomePage home = new HomePage();
-        home.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_BackToHomeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -327,23 +249,25 @@ public class EditProfile extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new EditProfile().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new AddNewUser().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BackToHome;
+    private javax.swing.JButton Close;
     private javax.swing.JButton EditProfileButton;
     private javax.swing.JLabel EmailLabel;
     private javax.swing.JTextField EmailTextField;
-    private javax.swing.JLabel IDLabel;
-    private javax.swing.JTextField IDTextField;
     private javax.swing.JLabel NameLabel;
     private javax.swing.JTextField NameTextField;
     private javax.swing.JPasswordField PasswordField;
     private javax.swing.JLabel PasswordLabel;
+    private javax.swing.JComboBox<String> RoleJComboBox;
     private javax.swing.JLabel RoleLabel;
-    private javax.swing.JTextField RoleTextField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
+
+    private boolean isValidPassword(String password) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

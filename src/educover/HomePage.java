@@ -37,11 +37,9 @@ public class HomePage extends javax.swing.JFrame {
     private void initComponents() {
 
         MainPanel = new javax.swing.JPanel();
-        viewCourse = new javax.swing.JButton();
         CourseRecoveryPlan = new javax.swing.JButton();
         eligibilityCheck = new javax.swing.JButton();
         viewProfile = new javax.swing.JButton();
-        failedStudents = new javax.swing.JButton();
         generateReport = new javax.swing.JButton();
         logout = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -54,20 +52,6 @@ public class HomePage extends javax.swing.JFrame {
         MainPanel.setBackground(new java.awt.Color(255, 255, 255));
         MainPanel.setMaximumSize(new java.awt.Dimension(1920, 1080));
         MainPanel.setPreferredSize(new java.awt.Dimension(1920, 1080));
-
-        viewCourse.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        viewCourse.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Homepage_icons/open-book.png"))); // NOI18N
-        viewCourse.setText("View Course");
-        viewCourse.setAlignmentX(0.5F);
-        viewCourse.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        viewCourse.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        viewCourse.setPreferredSize(new java.awt.Dimension(100, 100));
-        viewCourse.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        viewCourse.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewCourseActionPerformed(evt);
-            }
-        });
 
         CourseRecoveryPlan.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         CourseRecoveryPlan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Homepage_icons/tumbUp.png"))); // NOI18N
@@ -108,20 +92,6 @@ public class HomePage extends javax.swing.JFrame {
         viewProfile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewProfileActionPerformed(evt);
-            }
-        });
-
-        failedStudents.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        failedStudents.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Homepage_icons/failed (1).png"))); // NOI18N
-        failedStudents.setText("View Failed Students");
-        failedStudents.setAlignmentX(0.5F);
-        failedStudents.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        failedStudents.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        failedStudents.setPreferredSize(new java.awt.Dimension(100, 100));
-        failedStudents.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        failedStudents.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                failedStudentsActionPerformed(evt);
             }
         });
 
@@ -170,15 +140,10 @@ public class HomePage extends javax.swing.JFrame {
                 .addGap(65, 65, 65)
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(MainPanelLayout.createSequentialGroup()
+                        .addGap(300, 300, 300)
                         .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(MainPanelLayout.createSequentialGroup()
-                                .addComponent(failedStudents, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(150, 150, 150)
-                                .addComponent(generateReport, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(MainPanelLayout.createSequentialGroup()
-                                .addComponent(viewCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(150, 150, 150)
-                                .addComponent(CourseRecoveryPlan, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(generateReport, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(CourseRecoveryPlan, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(150, 150, 150)
                         .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(MainPanelLayout.createSequentialGroup()
@@ -204,16 +169,14 @@ public class HomePage extends javax.swing.JFrame {
                         .addComponent(jLabel3)))
                 .addGap(139, 139, 139)
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(viewCourse, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(CourseRecoveryPlan, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(eligibilityCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(viewProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(132, 132, 132)
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(logout, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(failedStudents, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(generateReport, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(264, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -233,14 +196,6 @@ public class HomePage extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void viewCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewCourseActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_viewCourseActionPerformed
-
-    private void failedStudentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_failedStudentsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_failedStudentsActionPerformed
 
     private void generateReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateReportActionPerformed
         // Get instructor ID from Session (should be "I101", "I102", etc.)
@@ -273,9 +228,15 @@ public class HomePage extends javax.swing.JFrame {
         }
         
         JOptionPane.showMessageDialog(this, "Logout Successful ;)");
+        
         UserSession.userID = "";
         UserSession.userName = "";
+        UserSession.userEmail = "";
+        UserSession.userPassword = "";
+        UserSession.userType = "";
+        UserSession.OTP = "";
         UserSession.loginTime = "";
+        
         LoginPage login = new LoginPage();
         login.setVisible(true);
         this.dispose();
@@ -331,13 +292,11 @@ public class HomePage extends javax.swing.JFrame {
     private javax.swing.JButton CourseRecoveryPlan;
     private javax.swing.JPanel MainPanel;
     private javax.swing.JButton eligibilityCheck;
-    private javax.swing.JButton failedStudents;
     private javax.swing.JButton generateReport;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JButton logout;
-    private javax.swing.JButton viewCourse;
     private javax.swing.JButton viewProfile;
     // End of variables declaration//GEN-END:variables
 }

@@ -203,6 +203,13 @@ access = new AccessControlService(
     }// </editor-fold>//GEN-END:initComponents
 
     private void BackToHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackToHomeActionPerformed
+         if (UserSession.userID.startsWith("A")) {
+            AdminHomePage adminHome  = new AdminHomePage();
+            adminHome.setVisible(true);
+            this.dispose();
+            return;
+        }
+        
         HomePage home = new HomePage();
         home.setVisible(true);
         this.dispose();

@@ -26,6 +26,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.event.TableModelEvent;
 import educover.backend.AccessControlService;
 import educover.backend.CRPRepo;
+import educover.backend.UserSession;
 
 public class CourseRecoveryPlan extends javax.swing.JFrame {
     
@@ -38,7 +39,7 @@ public class CourseRecoveryPlan extends javax.swing.JFrame {
     private RecoveryPlan currentPlan;
     private static final String RECOVERY_FILE = "src/Data/Recovery.txt"; 
     private AccessControlService accessControl;
-    private String currentInstructorId = "I104";
+    private String currentInstructorId = UserSession.userID;
     
     private String calculateCgpaFromGradesFile(String studentId) {
     String path = "src/Data/grades.txt";
@@ -190,6 +191,7 @@ CRPTable.getColumnModel()
         FailedSummaryLabel = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         CRPTable = new javax.swing.JTable();
+        BackToHome = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -248,6 +250,11 @@ CRPTable.getColumnModel()
         AddTask.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
         AddTask.setForeground(new java.awt.Color(255, 255, 255));
         AddTask.setText("Add Task");
+        AddTask.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddTaskActionPerformed(evt);
+            }
+        });
 
         SaveButton.setBackground(new java.awt.Color(109, 223, 130));
         SaveButton.setFont(new java.awt.Font("sansserif", 1, 12)); // NOI18N
@@ -520,18 +527,33 @@ CRPTable.getColumnModel()
                 .addGap(0, 88, Short.MAX_VALUE))
         );
 
+        BackToHome.setBackground(new java.awt.Color(45, 59, 85));
+        BackToHome.setForeground(new java.awt.Color(255, 255, 255));
+        BackToHome.setText("Back to Home");
+        BackToHome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BackToHomeActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout wrapperLayout = new javax.swing.GroupLayout(wrapper);
         wrapper.setLayout(wrapperLayout);
         wrapperLayout.setHorizontalGroup(
             wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(wrapperLayout.createSequentialGroup()
-                .addComponent(ProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(wrapperLayout.createSequentialGroup()
+                        .addComponent(BackToHome, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         wrapperLayout.setVerticalGroup(
             wrapperLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, wrapperLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(BackToHome, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(ProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(104, 104, 104))
         );
@@ -725,12 +747,29 @@ CRPTable.getColumnModel()
     }//GEN-LAST:event_TXTsearchActionPerformed
 
     private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
-   ((RecoveryPlanTable) CRPTable.getModel()).stopEdit();
+    ((RecoveryPlanTable) CRPTable.getModel()).stopEdit();
     }//GEN-LAST:event_SaveButtonActionPerformed
 
     private void EditRowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditRowButtonActionPerformed
 
     }//GEN-LAST:event_EditRowButtonActionPerformed
+
+    private void AddTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddTaskActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_AddTaskActionPerformed
+
+    private void BackToHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackToHomeActionPerformed
+        if (UserSession.userID.startsWith("A")) {
+            AdminHomePage adminHome  = new AdminHomePage();
+            adminHome.setVisible(true);
+            this.dispose();
+            return;
+        }
+
+        HomePage home = new HomePage();
+        home.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BackToHomeActionPerformed
 
 private void populateFailedComponents(String studentId) {
     RecoveryPlan plan = new RecoveryPlan(studentId);
@@ -980,6 +1019,7 @@ private void onSubmitPlan() {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddTask;
     private javax.swing.JLabel BSCProgram;
+    private javax.swing.JButton BackToHome;
     private javax.swing.JLabel CGPA;
     private javax.swing.JLabel CGPALabel;
     private javax.swing.JTable CRPTable;
