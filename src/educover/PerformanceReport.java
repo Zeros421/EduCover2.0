@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.List;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
+import educover.backend.UserSession;
 import javax.swing.JFrame;
 import java.util.Properties;
 import javax.mail.*;
@@ -34,27 +35,22 @@ public class PerformanceReport extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger =
             java.util.logging.Logger.getLogger(PerformanceReport.class.getName());
-
-    // ===== INSTANCE VARIABLES =====
     private List<Student> allStudents;
     private List<Course> allCourses;
     private List<GradeRecord> allGrades;
     private DefaultListModel<String> listModel;
     private Student selectedStudent; 
-    
-    private List<Student> filteredStudents;  // Store filtered results
+    private List<Student> filteredStudents;
     private String currentSearchQuery = "";
-    private String currentSortOption = "name";
-    
+    private String currentSortOption = "name";    
     private String loggedInInstructorID;       
     private List<String> instructorCourses;      
     private boolean isAdmin;
-    // ===== CONSTRUCTOR =====
+    // CONSTRUCTOR
     public PerformanceReport() {
-        this(null);  // null means admin view
+        this(null);  
     }
 
-// New constructor (for specific instructor):
     public PerformanceReport(String instructorID) {
         this.loggedInInstructorID = instructorID;
         this.isAdmin = (instructorID == null || instructorID.isEmpty());
@@ -66,7 +62,7 @@ public class PerformanceReport extends javax.swing.JFrame {
         allCourses = loadCourses("src/Data/Course_Information.txt");
         allGrades = loadGrades("src/Data/grades.txt");
 
-        // NEW: Load instructor's courses if not admin
+        // Load instructor's courses if not admin
         if (!isAdmin) {
             instructorCourses = loadInstructorCourses(instructorID);
             System.out.println("DEBUG: Instructor " + instructorID + " teaches courses: " + instructorCourses);
@@ -87,12 +83,12 @@ public class PerformanceReport extends javax.swing.JFrame {
         List<String> courses = new ArrayList<>();
 
         if (instructorID == null || instructorID.isEmpty()) {
-            return courses;  // Admin has no course restrictions
+            return courses;  
         }
 
         try (BufferedReader br = new BufferedReader(new FileReader("src/Data/Course_Instructor_Mapping.txt"))) {
             String line;
-            br.readLine(); // Skip header: CourseID|InstructorID
+            br.readLine();
 
             while ((line = br.readLine()) != null) {
                 line = line.trim();
@@ -102,8 +98,8 @@ public class PerformanceReport extends javax.swing.JFrame {
 
                 String[] parts = line.split("\\|");
                 if (parts.length >= 2) {
-                    String courseID = parts[0].trim();           // C101
-                    String courseInstructorID = parts[1].trim(); // I101
+                    String courseID = parts[0].trim();           
+                    String courseInstructorID = parts[1].trim(); 
 
                     // If this course belongs to the logged-in instructor
                     if (courseInstructorID.equals(instructorID)) {
@@ -125,7 +121,7 @@ public class PerformanceReport extends javax.swing.JFrame {
     
     private List<Student> filterStudentsByInstructor() {
         if (isAdmin || instructorCourses.isEmpty()) {
-            return new ArrayList<>(allStudents);  // Admin sees all students
+            return new ArrayList<>(allStudents);  
         }
 
         List<Student> filtered = new ArrayList<>();
@@ -219,9 +215,9 @@ public class PerformanceReport extends javax.swing.JFrame {
         for (GradeRecord g : allGrades) {
             if (g.getStudentID().equals(studentID)) {
 
-                // NEW: If instructor logged in, only show their courses
+                // If instructor logged in, only show their courses
                 if (!isAdmin && !instructorCourses.contains(g.getCourseID())) {
-                    continue;  // Skip courses not taught by this instructor
+                    continue;  
                 }
 
                 Course c = findCourseByID(allCourses, g.getCourseID());
@@ -255,9 +251,9 @@ public class PerformanceReport extends javax.swing.JFrame {
         for (GradeRecord g : allGrades) {
             if (g.getStudentID().equals(studentID)) {
 
-                // NEW: If instructor logged in, only count their courses
+                // If instructor logged in, only count their courses
                 if (!isAdmin && !instructorCourses.contains(g.getCourseID())) {
-                    continue;  // Skip courses not taught by this instructor
+                    continue;  
                 }
 
                 Course c = findCourseByID(allCourses, g.getCourseID());
@@ -272,9 +268,9 @@ public class PerformanceReport extends javax.swing.JFrame {
     }
     //GET STUDENT EMAIL
     private String getStudentEmail(String studentID) {
-        try (BufferedReader br = new BufferedReader(new FileReader("C:/Users/siije/Documents/NetBeansProjects/GroupAssignment/EduCover/src/Data/Student_Information.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/Data/Student_Information.txt"))) {
             String line;
-            br.readLine(); // Skip header
+            br.readLine(); 
             while ((line = br.readLine()) != null) {
                 line = line.trim();
                 if (line.isEmpty()) {
@@ -283,7 +279,7 @@ public class PerformanceReport extends javax.swing.JFrame {
 
                 String[] parts = line.split("\\|");
                 if (parts.length >= 6 && parts[0].trim().equals(studentID)) {
-                    return parts[5].trim(); // Email is 6th column
+                    return parts[5].trim(); 
                 }
             }
         } catch (IOException e) {
@@ -292,7 +288,7 @@ public class PerformanceReport extends javax.swing.JFrame {
         return null;
     }
         private boolean sendEmailWithAttachment(String toEmail, String studentName, File attachment) {
-        // Email configuration - CHANGE THESE TO YOUR SETTINGS
+        // Email configuration
         final String FROM_EMAIL = "Simbaba2606@gmail.com";
         final String EMAIL_PASSWORD = "hyyqghpjsuyezgbl";
 
@@ -414,7 +410,7 @@ public class PerformanceReport extends javax.swing.JFrame {
         return results;
     }
 
-// ===== SORT STUDENTS METHOD =====
+// SORT STUDENTS METHOD
 // Add this method to sort students
     private void sortStudents(List<Student> students, String sortOption) {
         switch (sortOption) {
@@ -439,8 +435,7 @@ public class PerformanceReport extends javax.swing.JFrame {
         }
     }
 
-// ===== UPDATE STUDENT LIST METHOD =====
-// Add this method to refresh the JList display
+// STUDENT LIST METHOD
     private void updateStudentList(List<Student> students) {
         listModel.clear();
 
@@ -453,7 +448,7 @@ public class PerformanceReport extends javax.swing.JFrame {
         selectedStudent = null;
         clearTable();
     }
-    // ===== PDF GENERATION =====
+    //PDF GENERATION
     
     private void generatePDFReport(File file, Student student) throws Exception {
         Document document = new Document(PageSize.A4, 50, 50, 50, 50);
@@ -476,7 +471,7 @@ public class PerformanceReport extends javax.swing.JFrame {
         document.add(new Paragraph("Student ID: " + student.getStudentID(), normalFont));
         document.add(new Paragraph("Program: " + student.getProgram(), normalFont));
 
-        // NEW: Add instructor info if applicable
+        // Add instructor info if available
         if (!isAdmin) {
             document.add(new Paragraph("Instructor ID: " + loggedInInstructorID, normalFont));
             document.add(new Paragraph("Report Type: Instructor-Specific Courses Only", normalFont));
@@ -484,7 +479,7 @@ public class PerformanceReport extends javax.swing.JFrame {
             document.add(new Paragraph("Report Type: Complete Academic Record", normalFont));
         }
 
-        document.add(new Paragraph(" ")); // Spacing
+        document.add(new Paragraph(" ")); 
 
         // Course Table
         PdfPTable table = new PdfPTable(5);
@@ -500,13 +495,13 @@ public class PerformanceReport extends javax.swing.JFrame {
         addPDFTableHeader(table, "Grade", labelFont);
         addPDFTableHeader(table, "Credit Point", labelFont);
 
-        // Table Data - NEW: Filter by instructor's courses
+        // Table Data
         for (GradeRecord g : allGrades) {
             if (g.getStudentID().equals(student.getStudentID())) {
 
-                // NEW: Filter by instructor's courses
+                // Filter by instructor's courses
                 if (!isAdmin && !instructorCourses.contains(g.getCourseID())) {
-                    continue;  // Skip courses not taught by this instructor
+                    continue;  
                 }
 
                 Course c = findCourseByID(allCourses, g.getCourseID());
@@ -550,7 +545,7 @@ public class PerformanceReport extends javax.swing.JFrame {
 
     private void addPDFTableHeader(PdfPTable table, String text, Font font) {
         PdfPCell cell = new PdfPCell(new Phrase(text, font));
-        cell.setBackgroundColor(new BaseColor(144, 238, 144)); // Light green
+        cell.setBackgroundColor(new BaseColor(144, 238, 144)); 
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
         cell.setPadding(8);
@@ -564,13 +559,13 @@ public class PerformanceReport extends javax.swing.JFrame {
         table.addCell(cell);
     }
 
-    // ===== DATA LOADER METHODS (Built-in) =====
+    //DATA LOADER METHODS 
     
     private List<Student> loadStudents(String filepath) {
         List<Student> students = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
             String line;
-            br.readLine(); // Skip header
+            br.readLine(); 
             while ((line = br.readLine()) != null) {
                 line = line.trim();
                 if (line.isEmpty()) {
@@ -597,7 +592,7 @@ public class PerformanceReport extends javax.swing.JFrame {
         List<Course> courses = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
             String line;
-            br.readLine(); // Skip header
+            br.readLine();
             while ((line = br.readLine()) != null) {
                 line = line.trim();
                 if (line.isEmpty()) continue;
@@ -625,7 +620,7 @@ public class PerformanceReport extends javax.swing.JFrame {
         List<GradeRecord> grades = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
             String line;
-            br.readLine(); // Skip header
+            br.readLine(); 
             while ((line = br.readLine()) != null) {
                 line = line.trim();
                 if (line.isEmpty()) continue;
@@ -649,7 +644,7 @@ public class PerformanceReport extends javax.swing.JFrame {
         return grades;
     }
 
-    // ===== INNER CLASSES (Data Models) =====
+    // INNER CLASSES
     
     class Student {
 
@@ -1083,6 +1078,14 @@ public class PerformanceReport extends javax.swing.JFrame {
     }
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
+        
+        if (UserSession.userID.startsWith("A")) {
+            AdminHomePage adminHome  = new AdminHomePage();
+            adminHome.setVisible(true);
+            this.dispose();
+            return;
+        }
+        
         HomePage check = new HomePage();
             check.setVisible(true);
             check.setExtendedState(JFrame.MAXIMIZED_BOTH);

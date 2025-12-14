@@ -20,16 +20,11 @@ public class AccessControlService {
         this.lecturerInfoFile = lecturerInfoFile;
     }
 
-    /* =========================
-       PUBLIC API (used by UI)
-       ========================= */
 
-    // Used by EligibilityCheck
     public boolean canLecturerAccess(String lecturerID, String studentID) {
         return getAllowedStudents(lecturerID).contains(studentID);
     }
 
-    // MAIN METHOD you need
     public List<String> getAllowedStudents(String lecturerID) {
         List<String> allowedStudents = new ArrayList<>();
 
@@ -66,9 +61,6 @@ public class AccessControlService {
         return allowedStudents;
     }
 
-    /* =========================
-       INTERNAL HELPERS
-       ========================= */
 
     private String getLecturerNameById(String lecturerID) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(lecturerInfoFile))) {
@@ -90,7 +82,7 @@ public class AccessControlService {
 
         try (BufferedReader br = new BufferedReader(new FileReader(courseInfoFile))) {
             String line;
-            br.readLine(); // skip header
+            br.readLine(); 
 
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split("\\|");

@@ -37,7 +37,6 @@ public class AdminHomePage extends javax.swing.JFrame {
     private void initComponents() {
 
         MainPanel = new javax.swing.JPanel();
-        addRecommendation = new javax.swing.JButton();
         eligibilityCheck = new javax.swing.JButton();
         viewProfile = new javax.swing.JButton();
         manageUsers = new javax.swing.JButton();
@@ -52,20 +51,6 @@ public class AdminHomePage extends javax.swing.JFrame {
         MainPanel.setBackground(new java.awt.Color(255, 255, 255));
         MainPanel.setMaximumSize(new java.awt.Dimension(1920, 1080));
         MainPanel.setPreferredSize(new java.awt.Dimension(1920, 1080));
-
-        addRecommendation.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        addRecommendation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Homepage_icons/tumbUp.png"))); // NOI18N
-        addRecommendation.setText("CourseRecoveryPlan");
-        addRecommendation.setAlignmentX(0.5F);
-        addRecommendation.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        addRecommendation.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        addRecommendation.setPreferredSize(new java.awt.Dimension(100, 100));
-        addRecommendation.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        addRecommendation.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addRecommendationActionPerformed(evt);
-            }
-        });
 
         eligibilityCheck.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         eligibilityCheck.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Homepage_icons/list.png"))); // NOI18N
@@ -151,20 +136,20 @@ public class AdminHomePage extends javax.swing.JFrame {
             .addGroup(MainPanelLayout.createSequentialGroup()
                 .addGap(437, 437, 437)
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(MainPanelLayout.createSequentialGroup()
-                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(addRecommendation, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(manageUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(150, 150, 150)
-                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(generateReport, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(eligibilityCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(150, 150, 150)
-                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(viewProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(logout, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jLabel2)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addGroup(MainPanelLayout.createSequentialGroup()
+                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(MainPanelLayout.createSequentialGroup()
+                                .addComponent(generateReport, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(logout, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(MainPanelLayout.createSequentialGroup()
+                                .addComponent(manageUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(150, 150, 150)
+                                .addComponent(eligibilityCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(150, 150, 150)
+                        .addComponent(viewProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(574, 574, 574))
         );
         MainPanelLayout.setVerticalGroup(
@@ -176,13 +161,12 @@ public class AdminHomePage extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(147, 147, 147)
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(addRecommendation, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(eligibilityCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(viewProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(viewProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(manageUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(132, 132, 132)
                 .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(logout, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(manageUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(generateReport, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(248, 248, 248))
         );
@@ -238,13 +222,6 @@ public class AdminHomePage extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_logoutActionPerformed
 
-    private void addRecommendationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRecommendationActionPerformed
-            CourseRecoveryPlan check = new CourseRecoveryPlan(); 
-            check.setVisible(true);
-            check.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            this.dispose();
-    }//GEN-LAST:event_addRecommendationActionPerformed
-
     private void eligibilityCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eligibilityCheckActionPerformed
             EligibilityCheck check = new EligibilityCheck(); 
             check.setVisible(true);
@@ -286,7 +263,6 @@ public class AdminHomePage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel MainPanel;
-    private javax.swing.JButton addRecommendation;
     private javax.swing.JButton eligibilityCheck;
     private javax.swing.JButton generateReport;
     private javax.swing.JLabel jLabel1;

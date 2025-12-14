@@ -3,7 +3,7 @@ S001|Fiona|Smith|Computer Science|Sophomore|fiona.smith@university.edu
 S002|George|Wilson|Literature|Freshman|george.wilson@university.edu
 S003|Ivan|Wilson|Mathematics|Sophomore|ivan.wilson@university.edu
 S004|Ivan|Chen|Philosophy|Freshman|ivan.chen@university.edu
-S005|Bob|Smith|Statistics|Freshman|bob.smith@university.edu
+S005|Bob|Smith|Statistics|Sophomore|bob.smith@university.edu
 S006|Quinn|Chen|Engineering|Freshman|quinn.chen@university.edu
 S007|Oscar|Smith|Philosophy|Freshman|oscar.smith@university.edu
 S008|Bob|Chen|Engineering|Freshman|bob.chen@university.edu

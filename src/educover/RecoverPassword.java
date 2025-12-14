@@ -11,7 +11,11 @@ import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import javax.swing.BorderFactory;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 
 /**
  *
@@ -40,6 +44,7 @@ public class RecoverPassword extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         leftSide = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         rightSide = new javax.swing.JPanel();
         revocerPasswordEmail = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -58,19 +63,32 @@ public class RecoverPassword extends javax.swing.JFrame {
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Educover_logo/EduCoverLogo.png"))); // NOI18N
 
+        jButton1.setText("G0 back");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout leftSideLayout = new javax.swing.GroupLayout(leftSide);
         leftSide.setLayout(leftSideLayout);
         leftSideLayout.setHorizontalGroup(
             leftSideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, leftSideLayout.createSequentialGroup()
+            .addGroup(leftSideLayout.createSequentialGroup()
                 .addContainerGap(223, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addGap(237, 237, 237))
+            .addGroup(leftSideLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         leftSideLayout.setVerticalGroup(
             leftSideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(leftSideLayout.createSequentialGroup()
-                .addGap(290, 290, 290)
+                .addGap(20, 20, 20)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(224, 224, 224)
                 .addComponent(jLabel4)
                 .addContainerGap(290, Short.MAX_VALUE))
         );
@@ -190,67 +208,101 @@ public class RecoverPassword extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_revocerPasswordEmailKeyPressed
 
+    
+    private JDialog createLoadingDialog() {
+    JDialog dialog = new JDialog(this, "Please wait", true);
+    JLabel label = new JLabel("Sending OTP . . .", JLabel.CENTER);
+    label.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+
+    dialog.add(label);
+    dialog.pack();
+    dialog.setLocationRelativeTo(this);
+    dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+
+    return dialog;
+}
+    
     private void RequestOTPButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RequestOTPButtonActionPerformed
-    String userEmail = revocerPasswordEmail.getText().trim();
-
+ String userEmail = revocerPasswordEmail.getText().trim();
     File lectureData = new File(LectureFilePath);
-    boolean emailFound = false;
 
-    try (BufferedReader br = new BufferedReader(new FileReader(lectureData))) {
-        String line;
+    JDialog loadingDialog = createLoadingDialog();
 
-        while ((line = br.readLine()) != null) {
-            String[] parts = line.split("\\|");
+    SwingWorker<Void, Void> worker = new SwingWorker<>() {
+        boolean emailFound = false;
 
-            if (parts.length == 5) {
-                String fileEmail = parts[2];
+        @Override
+        protected Void doInBackground() throws Exception {
+            try (BufferedReader br = new BufferedReader(new FileReader(lectureData))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] parts = line.split("\\|");
 
-                if (fileEmail.equalsIgnoreCase(userEmail)) {
-                    emailFound = true;
+                    if (parts.length == 6) {
+                        String fileEmail = parts[2];
+                        if (fileEmail.equalsIgnoreCase(userEmail)) {
+                            emailFound = true;
 
-                    // generate OTP
-                    String otp = GenerateOTP.generateOTPNumber();
-                    UserSession.OTP = otp;   // store OTP (optional)
-                    UserSession.userEmail = userEmail;
-                    
-                    String subject = "Password Reset OTP for EduCover";
-                    String message = "Here is your one-time OTP: " + "(" +otp + ")" + " If you did not request this, Please Ingore this Email";
+                            // generate OTP
+                            String otp = GenerateOTP.generateOTPNumber();
+                            UserSession.OTP = otp;
+                            UserSession.userEmail = userEmail;
 
-                    // send email
-                    JavaMailAPI.sendEmail(userEmail, subject, message);
-                    
+                            // send email
+                            String subject = "Password Reset OTP for EduCover";
+                            String message = "Here is your one-time OTP: (" + otp + ") If you did not request this, please ignore this email.";
+                            JavaMailAPI.sendEmail(userEmail, subject, message);
+                            break;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                throw e;
+            }
+            return null;
+        }
+
+        @Override
+        protected void done() {
+            loadingDialog.dispose();
+            try {
+                get(); 
+                if (emailFound) {
+                    JOptionPane.showMessageDialog(null,
+                            "OTP has been sent to your email.",
+                            "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
                     VerifyOTP verify = new VerifyOTP();
                     verify.setVisible(true);
-                    this.dispose();
-                    
-                    JOptionPane.showMessageDialog(this,
-                        "OTP has been sent to your email.",
-                        "Success",
-                        JOptionPane.INFORMATION_MESSAGE);
-
-                    break;
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "Email not found. Please enter a valid email address.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null,
+                        "An error occurred: " + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
+    };
 
-        if (!emailFound) {
-            JOptionPane.showMessageDialog(this,
-                "Email not found. Please enter a valid email address.",
-                "Error",
-                JOptionPane.ERROR_MESSAGE);
-        }
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this,
-            "An error occurred: " + e.getMessage(),
-            "Error",
-            JOptionPane.ERROR_MESSAGE);
-    }
+    worker.execute();
+    loadingDialog.setVisible(true);
     }//GEN-LAST:event_RequestOTPButtonActionPerformed
 
     private void revocerPasswordEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revocerPasswordEmailActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_revocerPasswordEmailActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        LoginPage login = new LoginPage();
+        login.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -279,6 +331,7 @@ public class RecoverPassword extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton RequestOTPButton;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

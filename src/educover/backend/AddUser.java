@@ -58,7 +58,7 @@ public class AddUser {
                 ProfileInfo.userType + "|" +
                 ProfileInfo.userStatus;
 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(LectureFilePath, true))) {
             bw.newLine();
             bw.write(newUser);
         } catch (IOException e) {
