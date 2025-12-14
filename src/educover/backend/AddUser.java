@@ -15,7 +15,7 @@ import java.io.IOException;
  * @author aizik
  */
 public class AddUser {
-    private static final String Lecture_File_Path = "src/Data/Lecture_information.txt";
+    private static final String LectureFilePath = "src/Data/Lecture_information.txt";
 
     public static void addUser() {
 
@@ -42,8 +42,7 @@ public class AddUser {
                 }
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException e) {         
             return;
         }
 
@@ -63,7 +62,6 @@ public class AddUser {
             bw.newLine();
             bw.write(newUser);
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

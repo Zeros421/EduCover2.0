@@ -46,8 +46,8 @@ public class EditProfile extends javax.swing.JFrame {
         NameTextField = new javax.swing.JTextField();
         EmailTextField = new javax.swing.JTextField();
         RoleTextField = new javax.swing.JTextField();
-        BackToHome = new javax.swing.JButton();
         PasswordField = new javax.swing.JPasswordField();
+        BackToHome = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1920, 1080));
@@ -119,19 +119,21 @@ public class EditProfile extends javax.swing.JFrame {
             }
         });
 
-        BackToHome.setText("Back to Home");
-        BackToHome.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BackToHomeActionPerformed(evt);
-            }
-        });
-
         PasswordField.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         PasswordField.setText("jPasswordField1");
         PasswordField.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         PasswordField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PasswordFieldActionPerformed(evt);
+            }
+        });
+
+        BackToHome.setBackground(new java.awt.Color(45, 59, 85));
+        BackToHome.setForeground(new java.awt.Color(255, 255, 255));
+        BackToHome.setText("Back to Home");
+        BackToHome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BackToHomeActionPerformed(evt);
             }
         });
 
@@ -163,16 +165,16 @@ public class EditProfile extends javax.swing.JFrame {
                         .addGap(295, 295, 295)
                         .addComponent(EditProfileButton))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(BackToHome, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(27, 27, 27)
+                        .addComponent(BackToHome, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(205, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(BackToHome, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(31, 31, 31)
+                .addComponent(BackToHome, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(48, 48, 48)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -286,15 +288,22 @@ public class EditProfile extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_RoleTextFieldActionPerformed
 
+    private void PasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasswordFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PasswordFieldActionPerformed
+
     private void BackToHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackToHomeActionPerformed
+        if (UserSession.userID.startsWith("A")) {
+            AdminHomePage adminHome  = new AdminHomePage();
+            adminHome.setVisible(true);
+            this.dispose();
+            return;
+        }
+
         HomePage home = new HomePage();
         home.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BackToHomeActionPerformed
-
-    private void PasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasswordFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_PasswordFieldActionPerformed
 
     /**
      * @param args the command line arguments
