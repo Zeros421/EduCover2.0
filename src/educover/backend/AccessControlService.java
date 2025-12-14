@@ -36,7 +36,7 @@ public class AccessControlService {
 
             try (BufferedReader br = new BufferedReader(new FileReader(gradesFile))) {
                 String line;
-                br.readLine(); // skip header
+                br.readLine(); 
 
                 while ((line = br.readLine()) != null) {
                     if (line.trim().isEmpty()) continue;
@@ -65,12 +65,12 @@ public class AccessControlService {
     private String getLecturerNameById(String lecturerID) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(lecturerInfoFile))) {
             String line;
-            br.readLine(); // skip header
+            br.readLine(); 
 
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split("\\|");
                 if (parts.length >= 2 && parts[0].trim().equals(lecturerID)) {
-                    return parts[1].trim(); // lecturer name
+                    return parts[1].trim(); 
                 }
             }
         }
