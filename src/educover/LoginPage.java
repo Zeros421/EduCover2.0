@@ -258,6 +258,16 @@ public class LoginPage extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "System Error", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
+    if (result[0].equals("ERROR_SUSPENDED")){
+        JOptionPane.showMessageDialog(this, "Sorry it looks like your account has been suspended please see admin", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    if (result[0].equals("ERROR_DEACTIVATED")){
+        JOptionPane.showMessageDialog(this, "Sorry it looks like your account has been Deactivated please see admin", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+    
     LocalDateTime now = LocalDateTime.now();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
     
@@ -266,6 +276,7 @@ public class LoginPage extends javax.swing.JFrame {
     UserSession.userEmail = result[2];
     UserSession.userPassword = result [3];
     UserSession.userType = result [4];
+    UserSession.userStatus = result[5];
     UserSession.loginTime = now.format(formatter);
     
     ProfileInfo.userID = result[0];
@@ -273,13 +284,15 @@ public class LoginPage extends javax.swing.JFrame {
     ProfileInfo.userEmail = result[2];
     ProfileInfo.userPassword = result [3];
     ProfileInfo.userType = result [4];
+    ProfileInfo.userStatus = result[5];
+    ProfileInfo.userType = result [4];
     
 //    System.out.println("User ID: " + UserSession.userID);
 //    System.out.println("User Name: " + UserSession.userName);
 //    System.out.println("Login Time: " + UserSession.loginTime);
 //    System.out.println("user " + UserSession.userType);
 //    System.out.println("Email " + UserSession.userEmail);
-//    System.out.println("Password " + UserSession.userPassword);
+    System.out.println("Status" + ProfileInfo.userStatus);
 
     if (UserSession.userID.startsWith("A")) {
         AdminHomePage adminHome  = new AdminHomePage();

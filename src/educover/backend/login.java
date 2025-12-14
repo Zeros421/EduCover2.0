@@ -31,14 +31,21 @@ public class login {
                     if (parts.length == 6){
                         String fileEmail = parts[2];
                         String filePassword = parts[3];
+                        String fileStatus = parts[5];
 //                        System.out.println("txtfile:" + fileEmail + " " + "user input:" + userEmail);
                         
                         if (fileEmail.equalsIgnoreCase(userEmail)){
-                            if (filePassword.equals(userPassword)){
-                            return parts;
-                            }else{
-                            return new String[]{"ERROR_WRONG_PASSWORD"};
+                            if (!filePassword.equals(userPassword)) {
+                                return new String[]{"ERROR_WRONG_PASSWORD"};
                             }
+
+                            // Check for suspended or deactivated status
+                            if (fileStatus.equalsIgnoreCase("Suspended")) {
+                                return new String[]{"ERROR_SUSPENDED"};
+                            } else if (fileStatus.equalsIgnoreCase("Deactivated")) {
+                                return new String[]{"ERROR_DEACTIVATED"};
+                            }
+                            return parts;
                         }
                     }
                 }

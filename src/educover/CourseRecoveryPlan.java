@@ -89,8 +89,8 @@ public class CourseRecoveryPlan extends javax.swing.JFrame {
         failedRepo   = new FileFailedComponent("src/Data/Course_Result.txt");
         accessControl = new AccessControlService(
                 "src/Data/grades.txt",
-                "src/Data/Course_Information.txt",
-                "src/Data/Lecture_Information.txt"
+                "src/Data/Course_Instructor_Mapping.txt"
+                
         );
 
         currentPlan     = new RecoveryPlan("UNKNOWN");
