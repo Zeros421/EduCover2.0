@@ -26,6 +26,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.event.TableModelEvent;
 import educover.backend.AccessControlService;
 import educover.backend.CRPRepo;
+import educover.backend.UserSession;
 
 public class CourseRecoveryPlan extends javax.swing.JFrame {
     
@@ -38,7 +39,7 @@ public class CourseRecoveryPlan extends javax.swing.JFrame {
     private RecoveryPlan currentPlan;
     private static final String RECOVERY_FILE = "src/Data/Recovery.txt"; 
     private AccessControlService accessControl;
-    private String currentInstructorId = "I104";
+    private String currentInstructorId = UserSession.userID;
     
     private String calculateCgpaFromGradesFile(String studentId) {
     String path = "src/Data/grades.txt";
@@ -730,7 +731,7 @@ CRPTable.getColumnModel()
     }//GEN-LAST:event_TXTsearchActionPerformed
 
     private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
-    ((RecoveryPlan+Table) CRPTable.getModel()).stopEdit();
+    ((RecoveryPlanTable) CRPTable.getModel()).stopEdit();
     }//GEN-LAST:event_SaveButtonActionPerformed
 
     private void EditRowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditRowButtonActionPerformed

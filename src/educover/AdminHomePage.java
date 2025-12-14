@@ -55,7 +55,7 @@ public class AdminHomePage extends javax.swing.JFrame {
 
         addRecommendation.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         addRecommendation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Homepage_icons/tumbUp.png"))); // NOI18N
-        addRecommendation.setText("Add Recommendation");
+        addRecommendation.setText("CourseRecoveryPlan");
         addRecommendation.setAlignmentX(0.5F);
         addRecommendation.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         addRecommendation.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -239,7 +239,10 @@ public class AdminHomePage extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutActionPerformed
 
     private void addRecommendationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRecommendationActionPerformed
-        // TODO add your handling code here:
+            CourseRecoveryPlan check = new CourseRecoveryPlan(); 
+            check.setVisible(true);
+            check.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            this.dispose();
     }//GEN-LAST:event_addRecommendationActionPerformed
 
     private void eligibilityCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eligibilityCheckActionPerformed
