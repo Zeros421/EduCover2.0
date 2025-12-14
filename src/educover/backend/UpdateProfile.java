@@ -18,11 +18,13 @@ import javax.swing.JOptionPane;
 public class UpdateProfile {
     private static final String LectureFilePath = "src/Data/Lecture_information.txt";
     public static void updateProfile(){
-        String id = UserSession.userID;
-        String newName = UserSession.userName;
-        String newEmail = UserSession.userEmail;
-        String newPassword = UserSession.userPassword;
-        String userType = UserSession.userType;
+        String id = ProfileInfo.userID;
+        String newName = ProfileInfo.userName;
+        String newEmail = ProfileInfo.userEmail;
+        String newPassword = ProfileInfo.userPassword;
+        String userType = ProfileInfo.userType;
+        String status = ProfileInfo.userStatus;
+        
         
         File inputFile = new File(LectureFilePath);
         File tempFile = new File("lecture_information_temp.txt");
@@ -33,10 +35,7 @@ public class UpdateProfile {
             String[] parts = line.split("\\|");
             
             if(parts[0].equals(id)){
-                pw.println(id + "|" + newName + "|" + newEmail + "|" + newPassword + "|" + userType);
-                UserSession.userName = newName;
-                UserSession.userType = userType;
-                UserSession.userPassword = newPassword;
+                pw.println(id + "|" + newName + "|" + newEmail + "|" + newPassword + "|" + userType + "|" + status);
             }else {
                 pw.println(line);
             }

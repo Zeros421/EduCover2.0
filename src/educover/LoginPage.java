@@ -4,6 +4,7 @@
  */
 package educover;
 
+import educover.backend.ProfileInfo;
 import educover.backend.UserSession;
 import educover.backend.login;
 import java.awt.event.KeyEvent;
@@ -266,6 +267,12 @@ public class LoginPage extends javax.swing.JFrame {
     UserSession.userPassword = result [3];
     UserSession.userType = result [4];
     UserSession.loginTime = now.format(formatter);
+    
+    ProfileInfo.userID = result[0];
+    ProfileInfo.userName = result[1];
+    ProfileInfo.userEmail = result[2];
+    ProfileInfo.userPassword = result [3];
+    ProfileInfo.userType = result [4];
     
 //    System.out.println("User ID: " + UserSession.userID);
 //    System.out.println("User Name: " + UserSession.userName);

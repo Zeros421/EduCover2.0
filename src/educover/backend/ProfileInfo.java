@@ -8,13 +8,11 @@ package educover.backend;
  *
  * @author aizik
  */
-public class UserSession {
+public class ProfileInfo {
     public static String userID;
     public static String userName;
     public static String userEmail;
     public static String userPassword;
     public static String userType;
     public static String userStatus;
-    public static String loginTime;
-    public static String OTP;
 }

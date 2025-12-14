@@ -730,7 +730,7 @@ CRPTable.getColumnModel()
     }//GEN-LAST:event_TXTsearchActionPerformed
 
     private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveButtonActionPerformed
-//   ((RecoveryPlan+Table) CRPTable.getModel()).stopEdit();
+    ((RecoveryPlan+Table) CRPTable.getModel()).stopEdit();
     }//GEN-LAST:event_SaveButtonActionPerformed
 
     private void EditRowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditRowButtonActionPerformed
